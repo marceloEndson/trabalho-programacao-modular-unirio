@@ -13,6 +13,9 @@ import java.util.Scanner;
  * @author Felipe
  */
 public class TrabalhoPM {
+    
+    private static final String NOME_ARQUIVO_PRODUTOS = "produtos.txt";
+    private static final String NOME_ARQUIVO_PRECOS = "precos.txt";
 
     /**
      * @param args the command line arguments
@@ -38,7 +41,13 @@ public class TrabalhoPM {
     }
     
     private static void chamarOpcaoEscolhida(int opcao){
-        
+        ServicosProduto servicosProduto = new ServicosProduto();
+        if (opcao == 1)
+            servicosProduto.importarProdutosDoArquivo(NOME_ARQUIVO_PRODUTOS);
+        else if (opcao == 2)
+            servicosProduto.importarPrecosDoArquivo(NOME_ARQUIVO_PRECOS);
+        else
+            System.out.println("Opcao invalida.");
     }
     
 }
