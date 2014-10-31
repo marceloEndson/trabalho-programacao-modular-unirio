@@ -7,12 +7,20 @@
 package gui;
 
 import java.beans.PropertyVetoException;
+import java.io.File;
+import java.util.List;
+
 import javax.swing.JFileChooser;
 import javax.swing.JInternalFrame;
+import javax.swing.JOptionPane;
+
+import negocio.Vendedor;
+import acessodados.BDVendedoresXml;
+import acessodados.LerArquivoVendedoresTxt;
 
 /**
  *
- * @author Felipe
+ * @author Felipe / Rogerio 
  */
 public class TelaPrincipal extends javax.swing.JFrame {
 
@@ -150,11 +158,21 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_importarProdutosActionPerformed
 
     private void importarPrecosProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_importarPrecosProdutosActionPerformed
-        exibirSeletorArquivo("Importar Preços dos Produtos");
+        exibirSeletorArquivo("Importar Precos dos Produtos");
     }//GEN-LAST:event_importarPrecosProdutosActionPerformed
 
     private void importarVendedoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_importarVendedoresActionPerformed
-        exibirSeletorArquivo("Importar Vendedores");
+        File arquivoSelecionado = exibirSeletorArquivo("Importar Vendedores");
+        if (arquivoSelecionado!=null){
+        	LerArquivoVendedoresTxt leitor = new LerArquivoVendedoresTxt();
+        	
+        	List<Vendedor> lstVendedor = leitor.lerArquivoVendedor(arquivoSelecionado.getAbsolutePath());
+        	BDVendedoresXml dao = new BDVendedoresXml();
+        	for (Vendedor vendedor:lstVendedor){
+        		dao.salvarVendedor(vendedor);
+        	}
+        }
+        
     }//GEN-LAST:event_importarVendedoresActionPerformed
 
     private void importarVendasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_importarVendasActionPerformed
@@ -177,9 +195,12 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_consultarMediasVendasComissoesVendedorActionPerformed
 
      
-    private void exibirSeletorArquivo(String tituloJanela){
+    private File exibirSeletorArquivo(String tituloJanela){
         JFileChooser seletorArquivo = criarSeletorArquivo(tituloJanela);
         seletorArquivo.showOpenDialog(this);
+        
+        JOptionPane.showMessageDialog(null, "Arquivo selecionado: " + seletorArquivo.getSelectedFile().getAbsolutePath());
+        return seletorArquivo.getSelectedFile();
     }
     
      private JFileChooser criarSeletorArquivo(String tituloJanela){
