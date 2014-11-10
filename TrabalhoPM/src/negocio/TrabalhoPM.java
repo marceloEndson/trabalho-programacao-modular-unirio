@@ -6,7 +6,9 @@
 
 package negocio;
 
-import java.util.Scanner;
+import acessodados.ConexaoBancoDados;
+import java.sql.Connection;
+import java.sql.SQLException;
 
 /**
  *
@@ -18,7 +20,14 @@ public class TrabalhoPM {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO
+        try {
+            Connection con = ConexaoBancoDados.getConnection();
+            System.out.println("Conexao ok!");
+        } catch (SQLException ex) {
+            System.out.println("Conexao nao estabelecida!");
+            System.out.println(ex.getMessage());
+           
+        }
     }
 
     

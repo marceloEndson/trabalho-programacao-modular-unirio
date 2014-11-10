@@ -6,6 +6,7 @@
 
 package negocio;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
 
@@ -17,7 +18,7 @@ public class Produto {
     private int codigo;
     private String nome;
     private double preco;
-    private Date inicioVigenciaPreco;
+    private Calendar inicioVigenciaPreco;
 
     public Produto(int codigo, String nome) {
         this.codigo = codigo;
@@ -52,11 +53,11 @@ public class Produto {
         this.preco = preco;
     }
 
-    public Date getInicioVigenciaPreco() {
+    public Calendar getInicioVigenciaPreco() {
         return inicioVigenciaPreco;
     }
 
-    public void setInicioVigenciaPreco(Date inicioVigenciaPreco) {
+    public void setInicioVigenciaPreco(Calendar inicioVigenciaPreco) {
         this.inicioVigenciaPreco = inicioVigenciaPreco;
     }
 
