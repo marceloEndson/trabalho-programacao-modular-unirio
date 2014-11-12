@@ -6,11 +6,7 @@
 
 package negocio;
 
-import java.util.Calendar;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
+import org.joda.time.LocalDate;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -20,41 +16,21 @@ import static org.junit.Assert.*;
  */
 public class ProdutoTest {
     
-    final int CODIGO = 1;
-    final String NOME = "teste";
-    final double PRECO = 1.00;
-    Calendar data;
-    final int DIA = 1;
-    final int MES = 1;
-    final int ANO = 2014;
-    final boolean retornoBooleano = true;
-    
-    public ProdutoTest() {
-    }
-    
-    @BeforeClass
-    public static void setUpClass() {
-    }
-    
-    @AfterClass
-    public static void tearDownClass() {
-    }
-    
-    @Before
-    public void setUp() {
-    }
-    
-    @After
-    public void tearDown() {
-    }
-
+    private long codigo = 1;
+    private String nome = "teste";
+    private double preco = 1.00;
+    LocalDate data;
+    private static int DIA = 1;
+    private static int MES = 1;
+    private static int ANO = 2014;
+    private boolean retornoBooleano = true;
     /**
      * Test of getCodigo method, of class Produto.
      */
     @Test
     public void testGetCodigo() {
-        Produto instance = new Produto(CODIGO, NOME);
-        assertEquals(CODIGO, instance.getCodigo());
+        Produto instance = new Produto(codigo, nome);
+        assertEquals(codigo, instance.getCodigo());
     }
 
     /**
@@ -63,8 +39,8 @@ public class ProdutoTest {
     @Test
     public void testSetCodigo() {
         Produto instance = new Produto();
-        instance.setCodigo(CODIGO * 2);
-        assertEquals(CODIGO * 2, instance.getCodigo());
+        instance.setCodigo(codigo);
+        assertEquals(codigo, instance.getCodigo());
     }
 
     /**
@@ -72,8 +48,8 @@ public class ProdutoTest {
      */
     @Test
     public void testGetNome() {
-        Produto instance = new Produto(CODIGO, NOME);
-        assertEquals(NOME, instance.getNome());
+        Produto instance = new Produto(codigo, nome);
+        assertEquals(nome, instance.getNome());
     }
 
     /**
@@ -82,8 +58,8 @@ public class ProdutoTest {
     @Test
     public void testSetNome() {
         Produto instance = new Produto();
-        instance.setNome(NOME);
-        assertEquals(NOME, instance.getNome());
+        instance.setNome(nome);
+        assertEquals(nome, instance.getNome());
     }
   
     /**
@@ -92,8 +68,8 @@ public class ProdutoTest {
     @Test
     public void testSetPreco() {
         Produto instance = new Produto();
-        instance.setPreco(PRECO * 3);
-        assertEquals(instance.getPreco(), PRECO * 3, 0);
+        instance.setPreco(preco * 3);
+        assertEquals(instance.getPreco(), preco * 3, 0);
     }
 
     /**
@@ -102,8 +78,7 @@ public class ProdutoTest {
     @Test
     public void testSetInicioVigenciaPreco() {
         Produto instance = new Produto();
-        data = Calendar.getInstance();
-        data.set(ANO, MES, DIA);
+        data = new LocalDate(ANO, MES, DIA);
         instance.setInicioVigenciaPreco(data);
         assertEquals(data, instance.getInicioVigenciaPreco());
     }
@@ -113,8 +88,8 @@ public class ProdutoTest {
      */
     @Test
     public void testEquals() {
-        Produto primeiroProduto = new Produto(CODIGO, NOME);
-        Produto segundoProduto = new Produto(CODIGO, NOME);
+        Produto primeiroProduto = new Produto(codigo, nome);
+        Produto segundoProduto = new Produto(codigo, nome);
         assertEquals(retornoBooleano, primeiroProduto.equals(segundoProduto));
     }
     

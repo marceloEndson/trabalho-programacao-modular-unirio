@@ -19,7 +19,7 @@ import negocio.Produto;
  */
 public class LerArquivoProdutosTxt {
     
-    public List<Produto> lerArquivoProdutos(String nomeArquivo) {
+    public List<Produto> carregarProdutos(String nomeArquivo) {
         BufferedReader reader = null;
         List<Produto> resultado = new ArrayList<>();
         try {            
@@ -42,10 +42,15 @@ public class LerArquivoProdutosTxt {
         return resultado;
     }
     
-    public Produto processaLinhaProduto(String linha){
+    private Produto processaLinhaProduto(String linha){
         String[] partes = linha.split(";");
-        Produto produto = new Produto(Integer.parseInt(partes[0]), partes[1]);         
-        return produto;
+        try {
+            long codigo = Long.parseLong(partes[0]);
+            String nome = partes[1];
+            return new Produto(codigo, nome);
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
     }
     
 }

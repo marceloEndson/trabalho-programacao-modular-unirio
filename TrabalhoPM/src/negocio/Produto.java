@@ -6,34 +6,32 @@
 
 package negocio;
 
-import java.util.Calendar;
-import java.util.Date;
 import java.util.Objects;
+import org.joda.time.LocalDate;
 
 /**
  *
  * @author Felipe
  */
 public class Produto {
-    private int codigo;
+    private long codigo;
     private String nome;
     private double preco;
-    private Calendar inicioVigenciaPreco;
+    private LocalDate inicioVigenciaPreco;
 
-    public Produto(int codigo, String nome) {
+    public Produto(long codigo, String nome) {
         this.codigo = codigo;
         this.nome = nome;
     }
 
     public Produto() {
-        this.codigo = -1;
     }
 
-    public int getCodigo() {
+    public long getCodigo() {
         return codigo;
     }
 
-    public void setCodigo(int codigo) {
+    public void setCodigo(long codigo) {
         this.codigo = codigo;
     }
 
@@ -53,20 +51,12 @@ public class Produto {
         this.preco = preco;
     }
 
-    public Calendar getInicioVigenciaPreco() {
+    public LocalDate getInicioVigenciaPreco() {
         return inicioVigenciaPreco;
     }
 
-    public void setInicioVigenciaPreco(Calendar inicioVigenciaPreco) {
+    public void setInicioVigenciaPreco(LocalDate inicioVigenciaPreco) {
         this.inicioVigenciaPreco = inicioVigenciaPreco;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 3;
-        hash = 97 * hash + this.codigo;
-        hash = 97 * hash + Objects.hashCode(this.nome);
-        return hash;
     }
 
     @Override
@@ -82,7 +72,5 @@ public class Produto {
             return false;
         }
         return true;
-    }
-    
-    
+    }   
 }

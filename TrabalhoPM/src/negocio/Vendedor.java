@@ -6,19 +6,16 @@
 
 package negocio;
 
-import java.util.Date;
-import java.util.Objects;
-
 /**
  *
  * @author Rogerio
  */
 public class Vendedor {
-    private int codigo;
+    private long codigo;
     private String nome;
     private int categoria;
 
-    public Vendedor(int codigo, String nome, int categoria) {
+    public Vendedor(long codigo, String nome, int categoria) {
         this.codigo = codigo;
         this.nome = nome;
         this.categoria = categoria;
@@ -28,11 +25,11 @@ public class Vendedor {
         this.codigo = -1;
     }
 
-    public int getCodigo() {
+    public long getCodigo() {
         return codigo;
     }
 
-    public void setCodigo(int codigo) {
+    public void setCodigo(long codigo) {
         this.codigo = codigo;
     }
 
@@ -51,16 +48,7 @@ public class Vendedor {
     public void setCategoria(int categoria) {
         this.categoria = categoria;
     }
-
-
-    @Override
-    public int hashCode() {
-        int hash = 3;
-        hash = 97 * hash + this.codigo;
-        hash = 97 * hash + Objects.hashCode(this.nome);
-        return hash;
-    }
-
+    
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {
@@ -75,6 +63,6 @@ public class Vendedor {
         }
         return true;
     }
-    
+ 
     
 }
