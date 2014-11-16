@@ -9,25 +9,26 @@ package acessodados;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
  * @author Felipe
  */
-public class ConexaoBancoDados  {
+public class FabricaConexao  {
     
-    public static Connection getConnection()throws SQLException{
+    public Connection getConnection()throws SQLException{
         Connection conexao;
         try{
             try {
                 Class.forName("org.h2.Driver");
             } catch (ClassNotFoundException ex) {
+                System.out.println("Excecao dentro da classe ConexaoBancoDados");
                 System.out.println(ex.getMessage());
             }
-            conexao = DriverManager.getConnection("jdbc:h2://localhost:8082/progmodular/progmodular", "sa", "");
+            conexao = DriverManager.getConnection("jdbc:h2:~/progmodular/progmodular", "sa", "");
+            System.out.println("Conexao estabelecida.");
         } catch(SQLException excecao){
+            System.out.println("Conexao nao estabelecida.");
             throw excecao;
         }        
         return conexao;

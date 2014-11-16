@@ -6,7 +6,6 @@
 
 package negocio;
 
-import java.util.Objects;
 import org.joda.time.LocalDate;
 
 /**
