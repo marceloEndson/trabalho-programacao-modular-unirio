@@ -4,14 +4,18 @@
  * and open the template in the editor.
  */
 
-package acessodados;
+package br.edu.unirio.pm.dao;
 
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import negocio.Produto;
+
+import br.edu.unirio.pm.model.Produto;
+import br.edu.unirio.pm.resource.FabricaConexao;
+import br.edu.unirio.pm.util.Parser;
+import br.edu.unirio.pm.util.ParserProduto;
 
 /**
  *

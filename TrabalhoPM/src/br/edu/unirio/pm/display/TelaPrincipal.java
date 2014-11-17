@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package gui;
+package br.edu.unirio.pm.display;
 
 import java.beans.PropertyVetoException;
 import java.io.File;
@@ -14,9 +14,9 @@ import javax.swing.JFileChooser;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 
-import negocio.Vendedor;
-import acessodados.BDVendedoresXml;
-import acessodados.LerArquivoVendedoresTxt;
+import br.edu.unirio.pm.model.Vendedor;
+import br.edu.unirio.pm.resource.BDVendedoresXml;
+import br.edu.unirio.pm.util.LerArquivoVendedoresTxt;
 
 /**
  *

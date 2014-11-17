@@ -4,18 +4,18 @@
  * and open the template in the editor.
  */
 
-package gui;
+package br.edu.unirio.pm.display;
 
 /**
  *
  * @author Felipe
  */
-public class TelaTotaisVendasComissoesAcumulado extends javax.swing.JInternalFrame {
+public class TelaMediasVendasComissoes extends javax.swing.JInternalFrame {
 
     /**
-     * Creates new form TelaTotaisVendasComissoesAcumulado
+     * Creates new form TelaMediasVendasComissoes
      */
-    public TelaTotaisVendasComissoesAcumulado() {
+    public TelaMediasVendasComissoes() {
         initComponents();
     }
 
@@ -32,18 +32,18 @@ public class TelaTotaisVendasComissoesAcumulado extends javax.swing.JInternalFra
         jComboBox1 = new javax.swing.JComboBox();
         jLabel2 = new javax.swing.JLabel();
         jComboBox2 = new javax.swing.JComboBox();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        tabelaTotaisVendasComissoesAcumulado = new javax.swing.JTable();
         jLabel3 = new javax.swing.JLabel();
         jComboBox3 = new javax.swing.JComboBox();
         jLabel4 = new javax.swing.JLabel();
         jComboBox4 = new javax.swing.JComboBox();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tabelaMediasVendasComissoes = new javax.swing.JTable();
 
         setClosable(true);
         setIconifiable(true);
         setMaximizable(true);
         setResizable(true);
-        setTitle("Totais de Vendas e Comissões por Vendedor / Acumulado");
+        setTitle("Médias de Vendas e Comissões por Vendedor");
         setMinimumSize(new java.awt.Dimension(700, 500));
         setPreferredSize(new java.awt.Dimension(700, 500));
 
@@ -55,7 +55,15 @@ public class TelaTotaisVendasComissoesAcumulado extends javax.swing.JInternalFra
 
         jComboBox2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        tabelaTotaisVendasComissoesAcumulado.setModel(new javax.swing.table.DefaultTableModel(
+        jLabel3.setText("Ano Final");
+
+        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        jLabel4.setText("Mês Final");
+
+        jComboBox4.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        tabelaMediasVendasComissoes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null},
                 {null, null, null},
@@ -66,15 +74,7 @@ public class TelaTotaisVendasComissoesAcumulado extends javax.swing.JInternalFra
                 "Nome do Vendedor", "Total de Vendas", "Total de Comissões"
             }
         ));
-        jScrollPane1.setViewportView(tabelaTotaisVendasComissoesAcumulado);
-
-        jLabel3.setText("Ano Final");
-
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        jLabel4.setText("Mês Final");
-
-        jComboBox4.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jScrollPane1.setViewportView(tabelaMediasVendasComissoes);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -135,6 +135,6 @@ public class TelaTotaisVendasComissoesAcumulado extends javax.swing.JInternalFra
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable tabelaTotaisVendasComissoesAcumulado;
+    private javax.swing.JTable tabelaMediasVendasComissoes;
     // End of variables declaration//GEN-END:variables
 }

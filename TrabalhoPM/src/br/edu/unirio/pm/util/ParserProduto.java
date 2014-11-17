@@ -4,15 +4,15 @@
  * and open the template in the editor.
  */
 
-package acessodados;
+package br.edu.unirio.pm.util;
 
-import negocio.Produto;
+import br.edu.unirio.pm.model.Produto;
 
 /**
  *
  * @author MCE
  */
-class ParserProduto implements Parser<Produto> {
+public class ParserProduto implements Parser<Produto> {
 //TODO REMOVER O RETURN NULL
     @Override
     public Produto processa(String linha) {

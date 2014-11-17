@@ -3,15 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package acessodados;
+package br.edu.unirio.pm.util;
 
-import negocio.Vendedor;
+import br.edu.unirio.pm.model.Vendedor;
 
 /**
  *
  * @author MCE
  */
-class ParserVendedor implements Parser<Vendedor> {
+public class ParserVendedor implements Parser<Vendedor> {
 
     @Override
     public Vendedor processa(String linha) {

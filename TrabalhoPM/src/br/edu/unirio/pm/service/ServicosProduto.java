@@ -4,10 +4,12 @@
  * and open the template in the editor.
  */
 
-package negocio;
+package br.edu.unirio.pm.service;
 
-import acessodados.BDProdutosXml;
-import acessodados.LerArquivoProdutosTxt;
+import br.edu.unirio.pm.model.Produto;
+import br.edu.unirio.pm.resource.BDProdutosXml;
+import br.edu.unirio.pm.util.LerArquivoProdutosTxt;
+
 import java.util.HashMap;
 import java.util.Map;
 

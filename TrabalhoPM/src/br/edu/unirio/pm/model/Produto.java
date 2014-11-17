@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package negocio;
+package br.edu.unirio.pm.model;
 
 import org.joda.time.LocalDate;
 

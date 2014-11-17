@@ -4,14 +4,15 @@
  * and open the template in the editor.
  */
 
-package acessodados;
+package br.edu.unirio.pm.resource;
 
 import java.beans.XMLDecoder;
 import java.beans.XMLEncoder;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import negocio.Produto;
+
+import br.edu.unirio.pm.model.Produto;
 
 /**
  *

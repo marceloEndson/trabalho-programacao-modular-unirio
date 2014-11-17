@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package acessodados;
+package br.edu.unirio.pm.util;
 
 /**
  *

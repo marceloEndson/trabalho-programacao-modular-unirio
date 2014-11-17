@@ -4,11 +4,8 @@
  * and open the template in the editor.
  */
 
-package negocio;
+package br.edu.unirio.pm.service;
 
-import acessodados.FabricaConexao;
-import java.sql.Connection;
-import java.sql.SQLException;
 
 /**
  *
