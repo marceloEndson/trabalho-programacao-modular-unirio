@@ -6,10 +6,10 @@
 
 package conjuntodetestes;
 
-import acessodados.ParserProdutoTest;
-import acessodados.ParserVendedorTest;
-import acessodados.ProdutoDAOTest;
-import acessodados.VendedoresDAOTest;
+import br.edu.unirio.pm.util.ParserProdutoTest;
+import br.edu.unirio.pm.util.ParserVendedorTest;
+import br.edu.unirio.pm.dao.ProdutoDAOTest;
+import br.edu.unirio.pm.dao.VendedoresDAOTest;
 import negocio.ProdutoTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;

@@ -6,10 +6,9 @@
 
 package br.edu.unirio.pm.service;
 
-import br.edu.unirio.pm.action.LerArquivoProdutosTxt;
-import br.edu.unirio.pm.action.LerArquivoVendedoresTxt;
+import br.edu.unirio.pm.dao.AbstractArquivosDAO;
+import br.edu.unirio.pm.dao.VendedoresDAO;
 import br.edu.unirio.pm.model.Vendedor;
-import br.edu.unirio.pm.resource.BDProdutosXml;
 import br.edu.unirio.pm.resource.BDVendedoresXml;
 
 import java.util.HashMap;
@@ -21,12 +20,12 @@ import java.util.Map;
  */
 public class ServicosVendedores {
     
-    private LerArquivoVendedoresTxt lerArquivoVendedoresTxt;
+    private AbstractArquivosDAO vendedoresDAO;
     private BDVendedoresXml bdVendedoresXml;    
     private Map<Integer, Vendedor> mapaCodigoVendedores;
 
     public ServicosVendedores() {
-    	  lerArquivoVendedoresTxt = new LerArquivoVendedoresTxt();
+    	  vendedoresDAO = new VendedoresDAO();
           bdVendedoresXml = new BDVendedoresXml();
           mapaCodigoVendedores = new HashMap<>();
     }
@@ -34,13 +33,13 @@ public class ServicosVendedores {
     
    
 
-	public LerArquivoVendedoresTxt getLerArquivoVendedoresTxt() {
-		return lerArquivoVendedoresTxt;
+	public AbstractArquivosDAO getVendedoresDAO() {
+		return vendedoresDAO;
 	}
 
 
-	public void setLerArquivoVendedoresTxt(LerArquivoVendedoresTxt lerArquivoVendedoresTxt) {
-		this.lerArquivoVendedoresTxt = lerArquivoVendedoresTxt;
+	public void setVendedoresDAO(AbstractArquivosDAO vendedoresDAO) {
+		this.vendedoresDAO = vendedoresDAO;
 	}
 
 

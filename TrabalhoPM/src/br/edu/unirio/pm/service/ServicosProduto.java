@@ -6,7 +6,8 @@
 
 package br.edu.unirio.pm.service;
 
-import br.edu.unirio.pm.action.LerArquivoProdutosTxt;
+import br.edu.unirio.pm.dao.AbstractArquivosDAO;
+import br.edu.unirio.pm.dao.ProdutosDAO;
 import br.edu.unirio.pm.model.Produto;
 import br.edu.unirio.pm.resource.BDProdutosXml;
 
@@ -19,12 +20,12 @@ import java.util.Map;
  */
 public class ServicosProduto {
     
-    private LerArquivoProdutosTxt lerArquivoProdutosTxt;
+    private AbstractArquivosDAO produtosDAO;
     private BDProdutosXml bdProdutosXml;    
     private Map<Integer, Produto> mapaCodigoProduto;
 
     public ServicosProduto() {
-        lerArquivoProdutosTxt = new LerArquivoProdutosTxt();
+        produtosDAO = new ProdutosDAO();
         bdProdutosXml = new BDProdutosXml();
         mapaCodigoProduto = new HashMap<>();
     }

@@ -6,6 +6,7 @@
 
 package negocio;
 
+import br.edu.unirio.pm.model.Produto;
 import org.joda.time.LocalDate;
 import org.junit.Test;
 import static org.junit.Assert.*;

@@ -15,10 +15,10 @@ import javax.swing.JFileChooser;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 
-import br.edu.unirio.pm.action.LerArquivoVendedoresTxt;
-import br.edu.unirio.pm.dao.VendedoresDAO;
 import br.edu.unirio.pm.model.Vendedor;
-import br.edu.unirio.pm.resource.BDVendedoresXml;
+import br.edu.unirio.pm.dao.AbstractArquivosDAO;
+import br.edu.unirio.pm.dao.VendedoresDAO;
+
 
 /**
  *
@@ -166,9 +166,9 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private void importarVendedoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_importarVendedoresActionPerformed
         File arquivoSelecionado = exibirSeletorArquivo("Importar Vendedores");
         if (arquivoSelecionado!=null){
-        	LerArquivoVendedoresTxt leitor = new LerArquivoVendedoresTxt();
+        	AbstractArquivosDAO leitor = new VendedoresDAO();
         	
-        	List<Vendedor> lstVendedor = leitor.lerArquivoVendedor(arquivoSelecionado.getAbsolutePath());
+        	List<Vendedor> lstVendedor = leitor.getObjetos(arquivoSelecionado.getAbsolutePath());
         	VendedoresDAO dao = new VendedoresDAO();
         	boolean ocorreuErro=false;
         	for (Vendedor vendedor:lstVendedor){
