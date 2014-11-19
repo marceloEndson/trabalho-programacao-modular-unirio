@@ -6,11 +6,11 @@
 
 package br.edu.unirio.pm.service;
 
+import br.edu.unirio.pm.action.LerArquivoProdutosTxt;
+import br.edu.unirio.pm.action.LerArquivoVendedoresTxt;
 import br.edu.unirio.pm.model.Vendedor;
 import br.edu.unirio.pm.resource.BDProdutosXml;
 import br.edu.unirio.pm.resource.BDVendedoresXml;
-import br.edu.unirio.pm.util.LerArquivoProdutosTxt;
-import br.edu.unirio.pm.util.LerArquivoVendedoresTxt;
 
 import java.util.HashMap;
 import java.util.Map;

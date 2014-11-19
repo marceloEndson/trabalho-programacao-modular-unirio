@@ -6,9 +6,9 @@
 
 package br.edu.unirio.pm.service;
 
+import br.edu.unirio.pm.action.LerArquivoProdutosTxt;
 import br.edu.unirio.pm.model.Produto;
 import br.edu.unirio.pm.resource.BDProdutosXml;
-import br.edu.unirio.pm.util.LerArquivoProdutosTxt;
 
 import java.util.HashMap;
 import java.util.Map;

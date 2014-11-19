@@ -8,15 +8,17 @@ package br.edu.unirio.pm.display;
 
 import java.beans.PropertyVetoException;
 import java.io.File;
+import java.sql.SQLException;
 import java.util.List;
 
 import javax.swing.JFileChooser;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 
+import br.edu.unirio.pm.action.LerArquivoVendedoresTxt;
+import br.edu.unirio.pm.dao.VendedoresDAO;
 import br.edu.unirio.pm.model.Vendedor;
 import br.edu.unirio.pm.resource.BDVendedoresXml;
-import br.edu.unirio.pm.util.LerArquivoVendedoresTxt;
 
 /**
  *
@@ -167,10 +169,24 @@ public class TelaPrincipal extends javax.swing.JFrame {
         	LerArquivoVendedoresTxt leitor = new LerArquivoVendedoresTxt();
         	
         	List<Vendedor> lstVendedor = leitor.lerArquivoVendedor(arquivoSelecionado.getAbsolutePath());
-        	BDVendedoresXml dao = new BDVendedoresXml();
+        	VendedoresDAO dao = new VendedoresDAO();
+        	boolean ocorreuErro=false;
         	for (Vendedor vendedor:lstVendedor){
-        		dao.salvarVendedor(vendedor);
+        		try {
+					dao.inserirVendedor(vendedor);
+			          		
+				} catch (SQLException e) {
+					// Notificar erro caso ocorra problemas na conexao ou na leitura do arquivo
+			        JOptionPane.showMessageDialog(null, "Ocorreu o Seguinte Erro: " + e.getMessage() + " ao carregar o vendedor" + vendedor.getNome());
+					e.printStackTrace();
+					ocorreuErro=true;
+				}
         	}
+			if (!ocorreuErro) {
+				JOptionPane.showMessageDialog(null,
+						"Dados foram carregados com Sucesso! ");
+			}
+			
         }
         
     }//GEN-LAST:event_importarVendedoresActionPerformed

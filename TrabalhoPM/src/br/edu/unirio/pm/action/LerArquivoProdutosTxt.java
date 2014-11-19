@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package br.edu.unirio.pm.util;
+package br.edu.unirio.pm.action;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -12,25 +12,25 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.edu.unirio.pm.model.Vendedor;
+import br.edu.unirio.pm.model.Produto;
 
 /**
  *
- * @author Rogerio
+ * @author Felipe
  */
-public class LerArquivoVendedoresTxt {
+public class LerArquivoProdutosTxt {
     
-    public List<Vendedor> lerArquivoVendedor(String nomeArquivo) {
+    public List<Produto> carregarProdutos(String nomeArquivo) {
         BufferedReader reader = null;
-        List<Vendedor> resultado = new ArrayList<>();
+        List<Produto> resultado = new ArrayList<>();
         try {            
             try {
                 reader = new BufferedReader(new FileReader(nomeArquivo), 4096);
                 String linha;
                 while (reader.ready()) {
                     linha = reader.readLine();
-                    if (processaLinhaVendedor(linha) != null)
-                        resultado.add(processaLinhaVendedor(linha));  
+                    if (processaLinhaProduto(linha) != null)
+                        resultado.add(processaLinhaProduto(linha));  
                 }
             } 
             finally {
@@ -43,10 +43,15 @@ public class LerArquivoVendedoresTxt {
         return resultado;
     }
     
-    public Vendedor processaLinhaVendedor(String linha){
+    private Produto processaLinhaProduto(String linha){
         String[] partes = linha.split(";");
-        Vendedor vendedor = new Vendedor(Integer.parseInt(partes[0]), partes[1], Integer.parseInt(partes[2]));         
-        return vendedor;
+        try {
+            long codigo = Long.parseLong(partes[0]);
+            String nome = partes[1];
+            return new Produto(codigo, nome);
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
     }
     
 }

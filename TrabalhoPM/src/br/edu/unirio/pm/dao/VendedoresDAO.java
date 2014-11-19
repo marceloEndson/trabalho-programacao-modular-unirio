@@ -7,7 +7,6 @@
 package br.edu.unirio.pm.dao;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -17,10 +16,7 @@ import br.edu.unirio.pm.resource.FabricaConexao;
 import br.edu.unirio.pm.util.Parser;
 import br.edu.unirio.pm.util.ParserVendedor;
 
-/**
- *
- * @author MCE 
- */
+
 /**
  * @author rogerio.silva
  *
@@ -31,63 +27,61 @@ public class VendedoresDAO extends AbstractArquivosDAO<Vendedor>{
 	    private PreparedStatement comando;
 	    private ResultSet resultado;
 	    private final String INSERT = "insert into VENDEDOR (codigo, nome, categoria)"
-	                + "values (?, ?, ?)";
+	                                 + "values (?, ?, ?)";
 	    private final String SELECT = "select * from VENDEDOR where codigo = ?";
-	    private final String UPDATE_NOME = "update VENDEDOR set nome = ? where codigo = ?";
-	    private final String UPDATE_NOME_CATEGORIA = "update VENDEDOR set nome=?, "
-	            + "categoria=? where codigo = ?";
+	    private final String UPDATE_NOME_CATEGORIA = "update VENDEDOR set nome=?, " 
+	    											+ "categoria=? where codigo = ?";
 
 	    @Override
 	    public Parser<Vendedor> getParser() {
-	        return new ParserVendedor();
+	        return new ParserVendedor();  
 	    }
 	    
-	    public void inserirVendedor(Vendedor vendedor) throws SQLException{
-	        if (vendedorEstaNoBanco(vendedor.getCodigo())){
-	            atualizarNomeVendedor(vendedor);
-	        } else {
-	            iniciarComando(INSERT);
-	            comando.setLong(1, vendedor.getCodigo());
-	            comando.setString(2, vendedor.getNome());
-	            comando.execute();
-	        }
-	        fecharConexao();
-	        fecharComando();       
-	    }
+	    /**
+	     * Retorna true caso tenha inserido, e false caso tenha atualizado.
+	     * @param vendedor
+	     * @return
+	     * @throws SQLException
+	     */
+		public boolean inserirVendedor(Vendedor vendedor) throws SQLException {
+			try {
+				if (vendedorEstaNoBanco(vendedor.getCodigo())) {
+					atualizarNomeVendedor(vendedor);
+					return false;
+				} else {
+					iniciarComando(INSERT);
+					comando.setLong(1, vendedor.getCodigo());
+					comando.setString(2, vendedor.getNome());
+					comando.setInt(3, vendedor.getCategoria());
+					comando.execute();
+					return true;
+				}
+			} finally {
+				fecharConexao();
+				fecharComando();
+			}
+		}
 	    
-	    public void atualizarNomeVendedor(Vendedor vendedor) throws SQLException{
-	        iniciarComando(UPDATE_NOME);
-	        comando.setString(1, vendedor.getNome());
-	        comando.setLong(2, vendedor.getCodigo());
-	        comando.execute();
-	    }
-	    
-	  /*  public void inserirDadosDePrecoNoProduto(Produto produto) throws SQLException{
-	        if (vendedorEstaNoBanco(produto.getCodigo())){
-	            iniciarComando(UPDATE_NOME_CATEGORIA);
-	            comando.setDouble(1, produto.getPreco());
-	            comando.setDate(2, Date.valueOf(produto.getInicioVigenciaPreco().toString()));
-	            comando.setLong(3, produto.getCodigo());
-	            comando.execute();
-	            fecharComando();
-	            fecharConexao();
-	        }
-	    }
-	    */
 	    public boolean vendedorEstaNoBanco(long codigoVendedor) throws SQLException {
 	        iniciarConexao();
 	        iniciarComando(SELECT);
 	        comando.setLong(1, codigoVendedor);
 	        resultado = comando.executeQuery();
-	        while (resultado.next()){
+	        if (resultado.next()){
 	            return true;
 	        }
 	        return false;        
 	    }
 	    
-	    public boolean produtoTemPrecoCadastrado(long codigoProduto){
-	        return false;
+	    public void atualizarNomeVendedor(Vendedor vendedor) throws SQLException{
+	        iniciarComando(UPDATE_NOME_CATEGORIA);
+	        comando.setString(1, vendedor.getNome());
+	        comando.setInt(2, vendedor.getCategoria());
+	        comando.setLong(3, vendedor.getCodigo());
+
+	        comando.execute();
 	    }
+	    
 	    
 	    private void iniciarConexao() throws SQLException{
 	        FabricaConexao fabricaConexao = new FabricaConexao();
@@ -104,8 +98,6 @@ public class VendedoresDAO extends AbstractArquivosDAO<Vendedor>{
 	    
 	    private void fecharConexao() throws SQLException{
 	        conexao.close();
-	    }
-	    
-	    
+	    }	    
 	    
 	}
