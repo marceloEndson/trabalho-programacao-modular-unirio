@@ -25,7 +25,7 @@ public class FabricaConexao  {
                 System.out.println("Excecao dentro da classe ConexaoBancoDados");
                 System.out.println(ex.getMessage());
             }
-            conexao = DriverManager.getConnection("jdbc:h2:~/progmodular/progmodular", "sa", "");
+            conexao = DriverManager.getConnection("jdbc:h2:tcp://localhost/~/programodular", "sa", "");
             System.out.println("Conexao estabelecida.");
         } catch(SQLException excecao){
             System.out.println("Conexao nao estabelecida.");
