@@ -22,9 +22,9 @@ import br.edu.unirio.pm.util.ParserVendedor;
  *
  */
 public class VendedoresDAO extends AbstractArquivosDAO<Vendedor>{
-	
-	  private Connection conexao;
-	    private PreparedStatement comando;
+	    //Agora referenciado na Classe FabricadeConexoes
+	    //private Connection conexao;
+	    //private PreparedStatement comando;
 	    private ResultSet resultado;
 	    private final String INSERT = "insert into VENDEDOR (codigo, nome, categoria)"
 	                                 + "values (?, ?, ?)";
@@ -44,12 +44,14 @@ public class VendedoresDAO extends AbstractArquivosDAO<Vendedor>{
 	     * @throws SQLException
 	     */
 		public boolean inserirVendedor(Vendedor vendedor) throws SQLException {
+			PreparedStatement comando = null;
 			try {
 				if (vendedorEstaNoBanco(vendedor.getCodigo())) {
 					atualizarNomeVendedor(vendedor);
 					return false;
 				} else {
-					iniciarComando(INSERT);
+					FabricaConexao.iniciarConexao();
+					comando = FabricaConexao.criarComando(INSERT);
 					comando.setLong(1, vendedor.getCodigo());
 					comando.setString(2, vendedor.getNome());
 					comando.setInt(3, vendedor.getCategoria());
@@ -57,47 +59,50 @@ public class VendedoresDAO extends AbstractArquivosDAO<Vendedor>{
 					return true;
 				}
 			} finally {
-				fecharConexao();
-				fecharComando();
+				FabricaConexao.fecharComando(comando);
+				FabricaConexao.fecharConexao();
 			}
 		}
 	    
-	    public boolean vendedorEstaNoBanco(long codigoVendedor) throws SQLException {
-	        iniciarConexao();
-	        iniciarComando(SELECT);
-	        comando.setLong(1, codigoVendedor);
-	        resultado = comando.executeQuery();
-	        if (resultado.next()){
-	            return true;
-	        }
-	        return false;        
-	    }
+		public boolean vendedorEstaNoBanco(long codigoVendedor) throws SQLException {
+			PreparedStatement comando = null;
+	
+			try {
+				FabricaConexao.iniciarConexao();
+				comando = FabricaConexao.criarComando(SELECT);
+				comando.setLong(1, codigoVendedor);
+				resultado = comando.executeQuery();
+				if (resultado.next()) {
+					return true;
+				}
+				return false;
+			}
+	
+			finally {
+				FabricaConexao.fecharComando(comando);
+				FabricaConexao.fecharConexao();
+			}
+	
+		}
 	    
-	    public void atualizarNomeVendedor(Vendedor vendedor) throws SQLException{
-	        iniciarComando(UPDATE_NOME_CATEGORIA);
-	        comando.setString(1, vendedor.getNome());
-	        comando.setInt(2, vendedor.getCategoria());
-	        comando.setLong(3, vendedor.getCodigo());
+	public void atualizarNomeVendedor(Vendedor vendedor) throws SQLException {
+		PreparedStatement comando = null;
 
-	        comando.execute();
-	    }
-	    
-	    
-	    private void iniciarConexao() throws SQLException{
-	        FabricaConexao fabricaConexao = new FabricaConexao();
-	        conexao = fabricaConexao.getConnection();
-	    }
-	    
-	    private void iniciarComando(String comandoSQL) throws SQLException{
-	        comando = conexao.prepareStatement(comandoSQL);
-	    }
-	    
-	    private void fecharComando() throws SQLException{
-	        comando.close();
-	    }
-	    
-	    private void fecharConexao() throws SQLException{
-	        conexao.close();
-	    }	    
-	    
+		try {
+			FabricaConexao.iniciarConexao();
+			comando = FabricaConexao.criarComando(UPDATE_NOME_CATEGORIA);
+			comando.setString(1, vendedor.getNome());
+			comando.setInt(2, vendedor.getCategoria());
+			comando.setLong(3, vendedor.getCodigo());
+			comando.execute();
+
+		}
+
+		finally {
+			FabricaConexao.fecharComando(comando);
+			FabricaConexao.fecharConexao();
+		}
+
 	}
+
+}

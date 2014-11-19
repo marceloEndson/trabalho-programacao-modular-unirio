@@ -22,7 +22,8 @@ import br.edu.unirio.pm.dao.VendedoresDAO;
 
 /**
  *
- * @author Felipe / Rogerio 
+ * @author Felipe 
+ * @alter  Rogerio 
  */
 public class TelaPrincipal extends javax.swing.JFrame {
 

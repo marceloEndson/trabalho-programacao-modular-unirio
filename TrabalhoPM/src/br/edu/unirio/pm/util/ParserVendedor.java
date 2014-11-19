@@ -17,7 +17,8 @@ public class ParserVendedor implements Parser<Vendedor> {
     public Vendedor processa(String linha) {
            try {
             String[] partes = linha.split(";");
-            long codigo = Long.parseLong(partes[0], 8); // O 8 é indica o sistema numérico em que a string será convertida, neste caso OCTAL. O DEFAULT é DECIMAL.
+         // long codigo = Long.parseLong(partes[0], 8); // O 8 é indica o sistema numérico em que a string será convertida, neste caso OCTAL. O DEFAULT é DECIMAL.
+            long codigo = Long.parseLong(partes[0]);
             String nome = partes[1];
             int categoria =  Integer.parseInt(partes[2]);
             if(validaVendedor(codigo, categoria)){
