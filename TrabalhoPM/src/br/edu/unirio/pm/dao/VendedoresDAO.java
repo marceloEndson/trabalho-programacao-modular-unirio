@@ -26,6 +26,7 @@ public class VendedoresDAO extends AbstractArquivosDAO<Vendedor>{
 	    //private Connection conexao;
 	    //private PreparedStatement comando;
 	    private ResultSet resultado;
+            private PreparedStatement comando;
 	    private final String INSERT = "insert into VENDEDOR (codigo, nome, categoria)"
 	                                 + "values (?, ?, ?)";
 	    private final String SELECT = "select * from VENDEDOR where codigo = ?";
@@ -104,5 +105,21 @@ public class VendedoresDAO extends AbstractArquivosDAO<Vendedor>{
 		}
 
 	}
+        
+        public Vendedor buscarVendedorNoBanco(long codigoVendedor) throws SQLException{
+        FabricaConexao.iniciarConexao();
+        comando = FabricaConexao.criarComando(SELECT);
+        comando.setLong(1, codigoVendedor);
+        resultado = comando.executeQuery();
+        while (resultado.next()){
+            Vendedor vendedor = new Vendedor();
+            vendedor.setCodigo(resultado.getLong("codigo"));
+            vendedor.setNome(resultado.getString("nome"));
+            vendedor.setCategoria(resultado.getInt("categoria"));
+            return vendedor;
+        }
+        return null;
+        
+    }
 
 }

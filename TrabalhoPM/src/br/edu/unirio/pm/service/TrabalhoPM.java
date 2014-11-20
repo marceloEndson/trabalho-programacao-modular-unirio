@@ -6,6 +6,14 @@
 
 package br.edu.unirio.pm.service;
 
+import br.edu.unirio.pm.dao.ProdutosDAO;
+import br.edu.unirio.pm.dao.VendedoresDAO;
+import br.edu.unirio.pm.model.Produto;
+import br.edu.unirio.pm.model.Vendedor;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 
 /**
  *
@@ -17,7 +25,7 @@ public class TrabalhoPM {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO
+        // Esta classe provavelmente será deletada.
     }
 
     

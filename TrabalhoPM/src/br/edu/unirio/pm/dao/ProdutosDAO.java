@@ -15,6 +15,11 @@ import br.edu.unirio.pm.model.Produto;
 import br.edu.unirio.pm.resource.FabricaConexao;
 import br.edu.unirio.pm.util.Parser;
 import br.edu.unirio.pm.util.ParserProduto;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.joda.time.LocalDate;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 /**
  *
@@ -32,6 +37,7 @@ public class ProdutosDAO extends AbstractArquivosDAO<Produto> {
     private final String UPDATE_NOME = "update produto set nome = ? where codigo = ?";
     private final String UPDATE_PRECO_VIGENCIA = "update produto set preco=?, "
             + "data_inicio_vigencia=? where codigo = ?";
+    PreparedStatement comando;
 
     @Override
     public Parser<Produto> getParser() {
@@ -39,7 +45,7 @@ public class ProdutosDAO extends AbstractArquivosDAO<Produto> {
     }
 
 	public boolean inserirProduto(Produto produto) throws SQLException {
-		PreparedStatement comando = null;
+		comando = null;
 		try {
 			if (produtoEstaNoBanco(produto.getCodigo())) {
 				atualizarNomeProduto(produto);
@@ -59,7 +65,7 @@ public class ProdutosDAO extends AbstractArquivosDAO<Produto> {
 	}
     
     public void atualizarNomeProduto(Produto produto) throws SQLException{
-		PreparedStatement comando = null;
+		comando = null;
 		
 		try {
 		FabricaConexao.iniciarConexao();
@@ -77,7 +83,7 @@ public class ProdutosDAO extends AbstractArquivosDAO<Produto> {
 	}
     
 	public boolean inserirDadosDePrecoNoProduto(Produto produto)throws SQLException {
-		PreparedStatement comando = null;
+		comando = null;
 		try {
 			if (!produtoEstaNoBanco(produto.getCodigo())) {
                                 System.out.println("Produto nao esta no banco");
@@ -98,7 +104,7 @@ public class ProdutosDAO extends AbstractArquivosDAO<Produto> {
 	}
 
     public boolean produtoEstaNoBanco(long codigoProduto) throws SQLException {
-		PreparedStatement comando = null;
+		comando = null;
 
         try{
 		FabricaConexao.iniciarConexao();
@@ -118,7 +124,26 @@ public class ProdutosDAO extends AbstractArquivosDAO<Produto> {
 
 }
     
+    public Produto buscarProdutoNoBanco(long codigoProduto) throws SQLException{
+        FabricaConexao.iniciarConexao();
+        comando = FabricaConexao.criarComando(SELECT);
+        comando.setLong(1, codigoProduto);
+        resultado = comando.executeQuery();
+        while (resultado.next()){
+            Produto produto = new Produto();
+            DateTimeFormatter formatter = DateTimeFormat.forPattern("dd/MM/yyy");
+            produto.setCodigo(resultado.getLong("codigo"));
+            produto.setNome(resultado.getString("nome"));
+            produto.setPreco(resultado.getDouble("preco"));
+            produto.setInicioVigenciaPreco(new LocalDate(resultado.getDate("data_inicio_vigencia")));
+            return produto;
+        }
+        return null;
+        
+    }
+    
     public boolean produtoTemPrecoCadastrado(long codigoProduto){
+        //TODO
         return false;
     }
     
