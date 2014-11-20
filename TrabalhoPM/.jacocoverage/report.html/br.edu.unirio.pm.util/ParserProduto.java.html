@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>ParserProduto.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;TrabalhoPM&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">br.edu.unirio.pm.util</a> &gt; <span class="el_source">ParserProduto.java</span></div><h1>ParserProduto.java</h1><pre class="source lang-java linenums">/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+package br.edu.unirio.pm.util;
+
+import br.edu.unirio.pm.model.Produto;
+
+/**
+ *
+ * @author MCE
+ */
+<span class="fc" id="L15">public class ParserProduto implements Parser&lt;Produto&gt; {</span>
+//TODO REMOVER O RETURN NULL
+    @Override
+    public Produto processa(String linha) {
+<span class="fc" id="L19">      String[] partes = linha.split(&quot;;&quot;);</span>
+        try {
+<span class="fc" id="L21">            long codigo = Long.parseLong(partes[0]);</span>
+<span class="fc" id="L22">            String nome = partes[1];</span>
+<span class="fc bfc" id="L23" title="All 2 branches covered.">            if(validaProduto(codigo)){</span>
+<span class="fc" id="L24">                return new Produto(codigo, nome);</span>
+            }
+<span class="fc" id="L26">        } catch (IllegalArgumentException e) {</span>
+<span class="fc" id="L27">            System.out.println(&quot;Erro ao processar linha de Produto&quot;);</span>
+<span class="fc" id="L28">        }</span>
+<span class="fc" id="L29">          return null;</span>
+    }
+
+    private boolean validaProduto(long codigo) {
+<span class="fc bfc" id="L33" title="All 2 branches covered.">        return codigo &gt; 0;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.4.201312101107</span></div></body></html>

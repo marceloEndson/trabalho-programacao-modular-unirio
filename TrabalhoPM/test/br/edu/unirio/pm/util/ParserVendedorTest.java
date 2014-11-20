@@ -22,7 +22,7 @@ public class ParserVendedorTest {
       Parser<Vendedor> parserVendedor = new ParserVendedor();
       Vendedor vendedor = parserVendedor.processa("0021;JOANA ANGELICA;2");
       
-      assertEquals(0021L, vendedor.getCodigo());
+      assertEquals(21, vendedor.getCodigo());
   }
   
   @Test

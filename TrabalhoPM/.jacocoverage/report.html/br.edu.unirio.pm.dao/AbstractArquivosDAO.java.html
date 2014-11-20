@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>AbstractArquivosDAO.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;TrabalhoPM&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">br.edu.unirio.pm.dao</a> &gt; <span class="el_source">AbstractArquivosDAO.java</span></div><h1>AbstractArquivosDAO.java</h1><pre class="source lang-java linenums">/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package br.edu.unirio.pm.dao;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import br.edu.unirio.pm.util.Parser;
+
+/**
+ *
+ * @author MCE
+ */
+<span class="fc" id="L20">public abstract class AbstractArquivosDAO&lt;T&gt; {</span>
+
+    public abstract Parser&lt;T&gt; getParser();
+
+    public List&lt;T&gt; getObjetos(String nomeArquivo) {
+<span class="fc" id="L25">        Parser&lt;T&gt; parser = getParser();</span>
+<span class="fc" id="L26">        return carregaArquivo(nomeArquivo, parser);</span>
+    }
+
+    private List&lt;T&gt; carregaArquivo(String nomeArquivo, Parser&lt;T&gt; parser) {
+<span class="fc" id="L30">        List&lt;T&gt; lista = new ArrayList&lt;T&gt;();</span>
+<span class="fc" id="L31">        BufferedReader reader = null;</span>
+        try {
+<span class="fc" id="L33">            reader = new BufferedReader(new FileReader(nomeArquivo));</span>
+            String linha;
+<span class="fc bfc" id="L35" title="All 2 branches covered.">            while ((linha = reader.readLine()) != null) {</span>
+<span class="fc" id="L36">                T objeto = parser.processa(linha);</span>
+<span class="pc bpc" id="L37" title="1 of 2 branches missed.">                if (objeto != null) {   //TODO REMOVER ESSA VERIFICAÇÃO E O RETURN NULL</span>
+<span class="fc" id="L38">                    lista.add(objeto);</span>
+                }
+<span class="fc" id="L40">            }</span>
+<span class="nc" id="L41">        } catch (IOException e) {</span>
+<span class="nc" id="L42">            System.out.println(&quot;Erro ao ler arquivo &quot; + e);</span>
+        } finally {
+<span class="nc" id="L44">            try {</span>
+<span class="pc bpc" id="L45" title="5 of 6 branches missed.">                if (reader != null) {</span>
+<span class="pc" id="L46">                    reader.close();</span>
+                }
+<span class="nc" id="L48">            } catch (Exception e2) {</span>
+<span class="nc" id="L49">                System.out.println(&quot;Erro ao fechar o arquivo&quot;);</span>
+<span class="pc" id="L50">            }</span>
+<span class="nc" id="L51">        }</span>
+<span class="fc" id="L52">        return lista;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.4.201312101107</span></div></body></html>

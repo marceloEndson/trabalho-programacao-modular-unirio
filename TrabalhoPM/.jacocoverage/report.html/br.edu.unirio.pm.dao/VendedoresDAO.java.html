@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>VendedoresDAO.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;TrabalhoPM&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">br.edu.unirio.pm.dao</a> &gt; <span class="el_source">VendedoresDAO.java</span></div><h1>VendedoresDAO.java</h1><pre class="source lang-java linenums">/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+package br.edu.unirio.pm.dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import br.edu.unirio.pm.model.Vendedor;
+import br.edu.unirio.pm.resource.FabricaConexao;
+import br.edu.unirio.pm.util.Parser;
+import br.edu.unirio.pm.util.ParserVendedor;
+
+
+/**
+ * @author rogerio.silva
+ *
+ */
+<span class="fc" id="L24">public class VendedoresDAO extends AbstractArquivosDAO&lt;Vendedor&gt;{</span>
+	    //Agora referenciado na Classe FabricadeConexoes
+	    //private Connection conexao;
+	    //private PreparedStatement comando;
+	    private ResultSet resultado;
+<span class="fc" id="L29">	    private final String INSERT = &quot;insert into VENDEDOR (codigo, nome, categoria)&quot;</span>
+	                                 + &quot;values (?, ?, ?)&quot;;
+<span class="fc" id="L31">	    private final String SELECT = &quot;select * from VENDEDOR where codigo = ?&quot;;</span>
+<span class="fc" id="L32">	    private final String UPDATE_NOME_CATEGORIA = &quot;update VENDEDOR set nome=?, &quot; </span>
+	    											+ &quot;categoria=? where codigo = ?&quot;;
+
+	    @Override
+	    public Parser&lt;Vendedor&gt; getParser() {
+<span class="fc" id="L37">	        return new ParserVendedor();  </span>
+	    }
+	    
+	    /**
+	     * Retorna true caso tenha inserido, e false caso tenha atualizado.
+	     * @param vendedor
+	     * @return
+	     * @throws SQLException
+	     */
+		public boolean inserirVendedor(Vendedor vendedor) throws SQLException {
+<span class="nc" id="L47">			PreparedStatement comando = null;</span>
+			try {
+<span class="nc bnc" id="L49" title="All 2 branches missed.">				if (vendedorEstaNoBanco(vendedor.getCodigo())) {</span>
+<span class="nc" id="L50">					atualizarNomeVendedor(vendedor);</span>
+<span class="nc" id="L51">					return false;</span>
+				} else {
+<span class="nc" id="L53">					FabricaConexao.iniciarConexao();</span>
+<span class="nc" id="L54">					comando = FabricaConexao.criarComando(INSERT);</span>
+<span class="nc" id="L55">					comando.setLong(1, vendedor.getCodigo());</span>
+<span class="nc" id="L56">					comando.setString(2, vendedor.getNome());</span>
+<span class="nc" id="L57">					comando.setInt(3, vendedor.getCategoria());</span>
+<span class="nc" id="L58">					comando.execute();</span>
+<span class="nc" id="L59">					return true;</span>
+				}
+			} finally {
+<span class="nc" id="L62">				FabricaConexao.fecharComando(comando);</span>
+<span class="nc" id="L63">				FabricaConexao.fecharConexao();</span>
+			}
+		}
+	    
+		public boolean vendedorEstaNoBanco(long codigoVendedor) throws SQLException {
+<span class="nc" id="L68">			PreparedStatement comando = null;</span>
+	
+			try {
+<span class="nc" id="L71">				FabricaConexao.iniciarConexao();</span>
+<span class="nc" id="L72">				comando = FabricaConexao.criarComando(SELECT);</span>
+<span class="nc" id="L73">				comando.setLong(1, codigoVendedor);</span>
+<span class="nc" id="L74">				resultado = comando.executeQuery();</span>
+<span class="nc bnc" id="L75" title="All 2 branches missed.">				if (resultado.next()) {</span>
+<span class="nc" id="L76">					return true;</span>
+				}
+<span class="nc" id="L78">				return false;</span>
+			}
+	
+			finally {
+<span class="nc" id="L82">				FabricaConexao.fecharComando(comando);</span>
+<span class="nc" id="L83">				FabricaConexao.fecharConexao();</span>
+			}
+	
+		}
+	    
+	public void atualizarNomeVendedor(Vendedor vendedor) throws SQLException {
+<span class="nc" id="L89">		PreparedStatement comando = null;</span>
+
+		try {
+<span class="nc" id="L92">			FabricaConexao.iniciarConexao();</span>
+<span class="nc" id="L93">			comando = FabricaConexao.criarComando(UPDATE_NOME_CATEGORIA);</span>
+<span class="nc" id="L94">			comando.setString(1, vendedor.getNome());</span>
+<span class="nc" id="L95">			comando.setInt(2, vendedor.getCategoria());</span>
+<span class="nc" id="L96">			comando.setLong(3, vendedor.getCodigo());</span>
+<span class="nc" id="L97">			comando.execute();</span>
+
+		}
+
+		finally {
+<span class="nc" id="L102">			FabricaConexao.fecharComando(comando);</span>
+<span class="nc" id="L103">			FabricaConexao.fecharConexao();</span>
+<span class="nc" id="L104">		}</span>
+
+<span class="nc" id="L106">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.4.201312101107</span></div></body></html>
