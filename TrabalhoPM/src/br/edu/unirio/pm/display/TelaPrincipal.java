@@ -17,7 +17,10 @@ import javax.swing.JOptionPane;
 
 import br.edu.unirio.pm.model.Vendedor;
 import br.edu.unirio.pm.dao.AbstractArquivosDAO;
+import br.edu.unirio.pm.dao.ProdutosDAO;
 import br.edu.unirio.pm.dao.VendedoresDAO;
+import br.edu.unirio.pm.model.Produto;
+import br.edu.unirio.pm.service.ServicosProduto;
 
 
 /**
@@ -26,6 +29,9 @@ import br.edu.unirio.pm.dao.VendedoresDAO;
  * @alter  Rogerio 
  */
 public class TelaPrincipal extends javax.swing.JFrame {
+    
+    private File arquivoSelecionado;
+    private ServicosProduto servicosProduto = new ServicosProduto();
 
     /**
      * Creates new form TelaInicial
@@ -157,15 +163,25 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void importarProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_importarProdutosActionPerformed
-        exibirSeletorArquivo("Importar Produtos");
+        arquivoSelecionado = exibirSeletorArquivo("Importar Produtos");
+        if (arquivoSelecionado != null){
+            String mensagem = servicosProduto.importarProdutosDoArquivo(arquivoSelecionado.getAbsolutePath());
+            exibirMensagemDialogo(mensagem);
+        } else
+            exibirMensagemDialogo("Arquivo inválido.");        
     }//GEN-LAST:event_importarProdutosActionPerformed
 
     private void importarPrecosProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_importarPrecosProdutosActionPerformed
-        exibirSeletorArquivo("Importar Precos dos Produtos");
+        arquivoSelecionado = exibirSeletorArquivo("Importar Precos dos Produtos");
+        if (arquivoSelecionado != null){
+            String mensagem = servicosProduto.importarPrecosDoArquivo(arquivoSelecionado.getAbsolutePath());
+            exibirMensagemDialogo(mensagem);
+        } else
+            exibirMensagemDialogo("Arquivo inválido.");
     }//GEN-LAST:event_importarPrecosProdutosActionPerformed
 
     private void importarVendedoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_importarVendedoresActionPerformed
-        File arquivoSelecionado = exibirSeletorArquivo("Importar Vendedores");
+        arquivoSelecionado = exibirSeletorArquivo("Importar Vendedores");
         if (arquivoSelecionado!=null){
         	AbstractArquivosDAO leitor = new VendedoresDAO();
         	
@@ -174,19 +190,18 @@ public class TelaPrincipal extends javax.swing.JFrame {
         	boolean ocorreuErro=false;
         	for (Vendedor vendedor:lstVendedor){
         		try {
-					dao.inserirVendedor(vendedor);
+				dao.inserirVendedor(vendedor);
 			          		
-				} catch (SQLException e) {
-					// Notificar erro caso ocorra problemas na conexao ou na leitura do arquivo
-			        JOptionPane.showMessageDialog(null, "Ocorreu o Seguinte Erro: " + e.getMessage() + " ao carregar o vendedor" + vendedor.getNome());
-					e.printStackTrace();
-					ocorreuErro=true;
-				}
-        	}
-			if (!ocorreuErro) {
-				JOptionPane.showMessageDialog(null,
-						"Dados foram carregados com Sucesso! ");
+			} catch (SQLException e) {
+				// Notificar erro caso ocorra problemas na conexao ou na leitura do arquivo
+			        exibirMensagemDialogo("Ocorreu o Seguinte Erro: " + e.getMessage() + " ao carregar o vendedor " + vendedor.getNome());
+				e.printStackTrace();
+				ocorreuErro=true;
 			}
+        	}
+		if (!ocorreuErro) {
+			exibirMensagemDialogo("Dados foram carregados com Sucesso!");
+		}
 			
         }
         
@@ -214,10 +229,13 @@ public class TelaPrincipal extends javax.swing.JFrame {
      
     private File exibirSeletorArquivo(String tituloJanela){
         JFileChooser seletorArquivo = criarSeletorArquivo(tituloJanela);
-        seletorArquivo.showOpenDialog(this);
-        
-        JOptionPane.showMessageDialog(null, "Arquivo selecionado: " + seletorArquivo.getSelectedFile().getAbsolutePath());
-        return seletorArquivo.getSelectedFile();
+        int retornoFileChooser = seletorArquivo.showOpenDialog(this);
+        if (retornoFileChooser == JFileChooser.APPROVE_OPTION){
+            exibirMensagemDialogo("Arquivo selecionado: " + seletorArquivo.getSelectedFile().getAbsolutePath());
+            return seletorArquivo.getSelectedFile();
+        } else
+            exibirMensagemDialogo("Nenhum arquivo foi selecionado.");
+        return null;            
     }
     
      private JFileChooser criarSeletorArquivo(String tituloJanela){
@@ -233,10 +251,15 @@ public class TelaPrincipal extends javax.swing.JFrame {
         try {
             janelaInterna.setMaximum(true);
         } catch (PropertyVetoException ex) {
-            System.out.println(ex.getMessage());
+            exibirMensagemDialogo("Ocorreu o seguinte erro: " + ex.getMessage());
         }
     }
-   
+    
+    private void exibirMensagemDialogo(String textoMensagem){
+        JOptionPane.showMessageDialog(null, textoMensagem);
+    }
+    
+  
     
     /**
      * @param args the command line arguments

@@ -23,6 +23,12 @@ public class Produto {
         this.nome = nome;
     }
 
+    public Produto(long codigo, double preco, LocalDate inicioVigenciaPreco) {
+        this.codigo = codigo;
+        this.preco = preco;
+        this.inicioVigenciaPreco = inicioVigenciaPreco;
+    }
+
     public Produto() {
     }
 

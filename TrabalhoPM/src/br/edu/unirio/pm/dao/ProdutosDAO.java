@@ -6,7 +6,6 @@
 
 package br.edu.unirio.pm.dao;
 
-import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -77,21 +76,19 @@ public class ProdutosDAO extends AbstractArquivosDAO<Produto> {
 
 	}
     
-	public boolean inserirDadosDePrecoNoProduto(Produto produto)
-			throws SQLException {
+	public boolean inserirDadosDePrecoNoProduto(Produto produto)throws SQLException {
 		PreparedStatement comando = null;
-
 		try {
-			if (produtoEstaNoBanco(produto.getCodigo())) {
+			if (!produtoEstaNoBanco(produto.getCodigo())) {
+                                System.out.println("Produto nao esta no banco");
 				return false;
 			} else {
 				FabricaConexao.iniciarConexao();
 				comando = FabricaConexao.criarComando(UPDATE_PRECO_VIGENCIA);
 				comando.setDouble(1, produto.getPreco());
-				comando.setDate(2, Date.valueOf(produto
-						.getInicioVigenciaPreco().toString()));
+				comando.setDate(2, Date.valueOf(produto.getInicioVigenciaPreco().toString()));
 				comando.setLong(3, produto.getCodigo());
-				comando.execute();
+				comando.executeUpdate();
 				return true;
 			}
 		} finally {
@@ -105,14 +102,14 @@ public class ProdutosDAO extends AbstractArquivosDAO<Produto> {
 
         try{
 		FabricaConexao.iniciarConexao();
-        comando = FabricaConexao.criarComando(SELECT);
-        comando.setLong(1, codigoProduto);
-        resultado = comando.executeQuery();
-        while (resultado.next()){
-            return true;
-        }
-		return false;
-	}
+            comando = FabricaConexao.criarComando(SELECT);
+            comando.setLong(1, codigoProduto);
+            resultado = comando.executeQuery();
+            while (resultado.next()){            
+                return true;
+            }
+            return false;
+         }
 
 	finally {
 		FabricaConexao.fecharComando(comando);

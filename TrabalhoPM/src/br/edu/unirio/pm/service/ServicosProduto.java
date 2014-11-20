@@ -6,13 +6,12 @@
 
 package br.edu.unirio.pm.service;
 
-import br.edu.unirio.pm.dao.AbstractArquivosDAO;
 import br.edu.unirio.pm.dao.ProdutosDAO;
 import br.edu.unirio.pm.model.Produto;
 import br.edu.unirio.pm.resource.BDProdutosXml;
-
-import java.util.HashMap;
-import java.util.Map;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -20,32 +19,47 @@ import java.util.Map;
  */
 public class ServicosProduto {
     
-    private AbstractArquivosDAO produtosDAO;
+    private ProdutosDAO produtosDAO;
     private BDProdutosXml bdProdutosXml;    
-    private Map<Integer, Produto> mapaCodigoProduto;
+    private List<Produto> listaProdutos;
+    private boolean ocorreuErro;
 
     public ServicosProduto() {
         produtosDAO = new ProdutosDAO();
         bdProdutosXml = new BDProdutosXml();
-        mapaCodigoProduto = new HashMap<>();
+        listaProdutos = new ArrayList<>();
+        ocorreuErro = false;
     }
     
     
     
-    public void importarProdutosDoArquivo(String nomeArquivoTxt){
-        // TODO
+    public String importarProdutosDoArquivo(String nomeArquivo){
+        listaProdutos = produtosDAO.getObjetos(nomeArquivo);
+        for (Produto produto : listaProdutos){
+            try{
+                produtosDAO.inserirProduto(produto);
+            } catch (SQLException e){
+                return "Ocorreu o seguinte erro ao carregar o registro " + produto.getCodigo() + ": " + e.getMessage();
+            }
+        }
+        return "Dados foram carregados com Sucesso!";
     }
     
-    public void importarPrecosDoArquivo(String nomeArquivoTxt){
-        // TODO
-    }
-    
-    public void salvarProdutoNoXml(Produto produto){
-        // TODO
-    }
-    
-    public void recuperarProdutoNoXml(){
-        // TODO
+    public String importarPrecosDoArquivo(String nomeArquivo){
+        listaProdutos = produtosDAO.getObjetos(nomeArquivo);
+        boolean sucesso = false;
+        for (Produto produto : listaProdutos){
+            try {
+                System.out.println(produto.getCodigo());
+                sucesso = produtosDAO.inserirDadosDePrecoNoProduto(produto);
+            } catch (SQLException e) {
+                return "Ocorreu o seguinte erro ao carregar o registro " + produto.getCodigo() + ": " + e.getMessage();
+            }
+        }
+        if (!sucesso)
+            return "Falha ao importar os dados.";
+        else
+            return "Dados foram carregados com Sucesso!";
     }
     
     public void atualizarPrecosDosProdutos(){
