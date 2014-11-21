@@ -24,16 +24,17 @@ import org.joda.time.format.DateTimeFormatter;
  */
 public class ParserVenda implements Parser<Venda> {
     private final DateTimeFormatter formatter = DateTimeFormat.forPattern("dd/MM/yyy");
-    private ProdutosDAO produtoDAO;
-    private VendedoresDAO vendedorDAO;
+    private ProdutosDAO produtosDAO = new ProdutosDAO();
+    private VendedoresDAO vendedorDAO = new VendedoresDAO();
    
     @Override
     public Venda processa(String linha) {
         String[] partes = linha.split(";");
         try {
             LocalDate dataVenda = formatter.parseLocalDate(partes[0]);
-            int quantidadeVendida = Integer.parseInt(partes[1]);            
-            Produto produto = produtoDAO.buscarProdutoNoBanco(Long.parseLong(partes[2]));
+            int quantidadeVendida = Integer.parseInt(partes[1]);
+            long numero = Long.parseLong(partes[2]);
+            Produto produto = produtosDAO.buscarProdutoNoBanco(Long.parseLong(partes[2]));
             Vendedor vendedor = vendedorDAO.buscarVendedorNoBanco(Long.parseLong(partes[3]));
             return new Venda(dataVenda, quantidadeVendida, produto, vendedor);
         } catch (IllegalArgumentException e) {

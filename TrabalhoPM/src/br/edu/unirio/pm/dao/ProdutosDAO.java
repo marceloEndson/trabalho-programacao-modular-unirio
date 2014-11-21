@@ -131,7 +131,6 @@ public class ProdutosDAO extends AbstractArquivosDAO<Produto> {
         resultado = comando.executeQuery();
         while (resultado.next()){
             Produto produto = new Produto();
-            DateTimeFormatter formatter = DateTimeFormat.forPattern("dd/MM/yyy");
             produto.setCodigo(resultado.getLong("codigo"));
             produto.setNome(resultado.getString("nome"));
             produto.setPreco(resultado.getDouble("preco"));

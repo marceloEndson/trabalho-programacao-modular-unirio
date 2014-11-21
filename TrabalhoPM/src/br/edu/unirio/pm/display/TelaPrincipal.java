@@ -20,7 +20,8 @@ import br.edu.unirio.pm.dao.AbstractArquivosDAO;
 import br.edu.unirio.pm.dao.ProdutosDAO;
 import br.edu.unirio.pm.dao.VendedoresDAO;
 import br.edu.unirio.pm.model.Produto;
-import br.edu.unirio.pm.service.ServicosProduto;
+import br.edu.unirio.pm.service.ServicosProdutos;
+import br.edu.unirio.pm.service.ServicosVendas;
 
 
 /**
@@ -31,7 +32,8 @@ import br.edu.unirio.pm.service.ServicosProduto;
 public class TelaPrincipal extends javax.swing.JFrame {
     
     private File arquivoSelecionado;
-    private ServicosProduto servicosProduto = new ServicosProduto();
+    private ServicosProdutos servicosProduto = new ServicosProdutos();
+    private ServicosVendas servicosVendas = new ServicosVendas();
 
     /**
      * Creates new form TelaInicial
@@ -208,7 +210,12 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_importarVendedoresActionPerformed
 
     private void importarVendasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_importarVendasActionPerformed
-        exibirSeletorArquivo("Importar Vendas");
+        arquivoSelecionado = exibirSeletorArquivo("Importar Vendas");
+        if (arquivoSelecionado != null){
+            String mensagem = servicosVendas.importarPrecosDoArquivo(arquivoSelecionado.getAbsolutePath());
+            exibirMensagemDialogo(mensagem);
+        } else
+            exibirMensagemDialogo("Arquivo inválido.");
     }//GEN-LAST:event_importarVendasActionPerformed
 
     private void consultarTotaisVendasComissoesVendedorMesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_consultarTotaisVendasComissoesVendedorMesActionPerformed

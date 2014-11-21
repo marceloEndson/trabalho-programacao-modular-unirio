@@ -7,12 +7,12 @@
 package br.edu.unirio.pm.service;
 
 import br.edu.unirio.pm.dao.AbstractArquivosDAO;
-import br.edu.unirio.pm.dao.VendedoresDAO;
-import br.edu.unirio.pm.model.Vendedor;
-import br.edu.unirio.pm.resource.BDVendedoresXml;
+import br.edu.unirio.pm.dao.VendasDAO;
+import br.edu.unirio.pm.model.Venda;
+import java.sql.SQLException;
+import java.util.ArrayList;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 /**
  *
@@ -20,39 +20,37 @@ import java.util.Map;
  */
 public class ServicosVendas {
     
-    private AbstractArquivosDAO vendedoresDAO;
-    private BDVendedoresXml bdVendedoresXml;    
-    private Map<Integer, Vendedor> mapaCodigoVendedores;
+    private VendasDAO vendasDAO;    
+    private List<Venda> listaVendas;
 
     public ServicosVendas() {
-    	  vendedoresDAO = new VendedoresDAO();
-          bdVendedoresXml = new BDVendedoresXml();
-          mapaCodigoVendedores = new HashMap<>();
+    	  vendasDAO = new VendasDAO();
+          listaVendas = new ArrayList<>();
     }
     
+    public AbstractArquivosDAO getVendasDAO() {
+	return vendasDAO;
+    }
+
+    public void setVendasDAO(VendasDAO vendasDAO) {
+	this.vendasDAO = vendasDAO;
+    }
     
-   
-
-	public AbstractArquivosDAO getVendedoresDAO() {
-		return vendedoresDAO;
-	}
-
-
-	public void setVendedoresDAO(AbstractArquivosDAO vendedoresDAO) {
-		this.vendedoresDAO = vendedoresDAO;
-	}
-
-
-
-	public BDVendedoresXml getBdVendedoresXml() {
-		return bdVendedoresXml;
-	}
-
-
-
-	public void setBdVendedoresXml(BDVendedoresXml bdVendedoresXml) {
-		this.bdVendedoresXml = bdVendedoresXml;
-	}
+    public String importarPrecosDoArquivo(String nomeArquivo){
+        listaVendas = vendasDAO.getObjetos(nomeArquivo);
+        boolean sucesso = false;
+        for (Venda venda : listaVendas){
+            try {
+                sucesso = vendasDAO.inserirVenda(venda);
+            } catch (SQLException e) {
+                return "Ocorreu o seguinte erro ao carregar o registro: " + e.getMessage();
+            }
+        }
+        if (!sucesso)
+            return "Falha ao importar os dados.";
+        else
+            return "Dados foram carregados com Sucesso!";
+    }
 
 
 }

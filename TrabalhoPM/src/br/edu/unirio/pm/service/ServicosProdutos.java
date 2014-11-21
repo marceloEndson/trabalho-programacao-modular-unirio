@@ -17,21 +17,15 @@ import java.util.List;
  *
  * @author Felipe
  */
-public class ServicosProduto {
+public class ServicosProdutos {
     
-    private ProdutosDAO produtosDAO;
-    private BDProdutosXml bdProdutosXml;    
+    private ProdutosDAO produtosDAO;    
     private List<Produto> listaProdutos;
-    private boolean ocorreuErro;
 
-    public ServicosProduto() {
+    public ServicosProdutos() {
         produtosDAO = new ProdutosDAO();
-        bdProdutosXml = new BDProdutosXml();
         listaProdutos = new ArrayList<>();
-        ocorreuErro = false;
     }
-    
-    
     
     public String importarProdutosDoArquivo(String nomeArquivo){
         listaProdutos = produtosDAO.getObjetos(nomeArquivo);
