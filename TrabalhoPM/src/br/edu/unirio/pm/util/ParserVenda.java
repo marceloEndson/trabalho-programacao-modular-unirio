@@ -33,7 +33,7 @@ public class ParserVenda implements Parser<Venda> {
         try {
             LocalDate dataVenda = formatter.parseLocalDate(partes[0]);
             int quantidadeVendida = Integer.parseInt(partes[1]);
-            long numero = Long.parseLong(partes[2]);
+            //long numero = Long.parseLong(partes[2]);
             Produto produto = produtosDAO.buscarProdutoNoBanco(Long.parseLong(partes[2]));
             Vendedor vendedor = vendedorDAO.buscarVendedorNoBanco(Long.parseLong(partes[3]));
             return new Venda(dataVenda, quantidadeVendida, produto, vendedor);

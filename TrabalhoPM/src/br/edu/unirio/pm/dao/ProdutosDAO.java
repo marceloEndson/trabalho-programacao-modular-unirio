@@ -130,12 +130,14 @@ public class ProdutosDAO extends AbstractArquivosDAO<Produto> {
         comando.setLong(1, codigoProduto);
         resultado = comando.executeQuery();
         while (resultado.next()){
-            Produto produto = new Produto();
-            produto.setCodigo(resultado.getLong("codigo"));
-            produto.setNome(resultado.getString("nome"));
-            produto.setPreco(resultado.getDouble("preco"));
-            produto.setInicioVigenciaPreco(new LocalDate(resultado.getDate("data_inicio_vigencia")));
-            return produto;
+            if(resultado.getLong("codigo") == codigoProduto){
+                Produto produto = new Produto();
+                produto.setCodigo(resultado.getLong("codigo"));
+                produto.setNome(resultado.getString("nome"));
+                produto.setPreco(resultado.getDouble("preco"));
+                produto.setInicioVigenciaPreco(new LocalDate(resultado.getDate("data_inicio_vigencia")));
+                return produto;
+            }
         }
         return null;
         

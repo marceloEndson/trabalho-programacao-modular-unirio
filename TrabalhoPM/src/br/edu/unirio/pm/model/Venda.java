@@ -18,6 +18,10 @@ public class Venda {
     private Produto produto;
     private Vendedor vendedor;
 
+    public Venda(){
+        
+    }
+    
     public Venda(LocalDate dataVenda,int quantidadeVendida , Produto produto, Vendedor vendedor) {
         this.dataVenda = dataVenda;
         this.vendedor = vendedor;

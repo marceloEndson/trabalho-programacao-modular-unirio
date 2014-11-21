@@ -3,21 +3,23 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package br.edu.unirio.pm.model;
 
 import org.joda.time.LocalDate;
-
 
 /**
  *
  * @author Felipe
  */
 public class Produto {
+
     private long codigo;
     private String nome;
     private double preco;
     private LocalDate inicioVigenciaPreco;
+
+    public Produto() {
+    }
 
     public Produto(long codigo, String nome) {
         this.codigo = codigo;
@@ -28,9 +30,6 @@ public class Produto {
         this.codigo = codigo;
         this.preco = preco;
         this.inicioVigenciaPreco = inicioVigenciaPreco;
-    }
-
-    public Produto() {
     }
 
     public long getCodigo() {
@@ -78,5 +77,5 @@ public class Produto {
             return false;
         }
         return true;
-    }   
+    }
 }

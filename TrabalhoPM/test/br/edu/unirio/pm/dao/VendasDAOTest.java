@@ -33,15 +33,18 @@ public class VendasDAOTest {
     private final int CODIGO_VENDEDOR_021 = 021;
     private final String NOME_ARQUIVO = "test/br/edu/unirio/pm/dao/dadosDeVendas.txt";
     private List<Venda> vendas;
-   
+
+    
     @Before
     public void setUpListaDeVendas(){
         AbstractArquivosDAO<Venda> vendaDAO = new VendasDAO();
+     // AbstractArquivosDAO<Venda> vendaDAO = mock(VendasDAO.class);
         vendas = vendaDAO.getObjetos(NOME_ARQUIVO);
     }
-    
+       
     @Test
     public void vendasDAOTestTotalDeObjetosNaLista(){  
+        
         assertEquals(24,vendas.size());
     }
     
