@@ -9,6 +9,8 @@ package br.edu.unirio.pm.dao;
 import br.edu.unirio.pm.model.Venda;
 import java.util.List;
 import org.joda.time.LocalDate;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
@@ -29,8 +31,8 @@ public class VendasDAOTest {
     private final int QUANTIDADA_PRODUTOS_80 = 80;
     private final long CODIGO_PRODUTO_COM_FINAL_036 = 7897123884036L;
     private final long CODIGO_PRODUTO_COM_FINAL_015 = 7894900700015L;
-    private final int CODIGO_VENDEDOR_020 = 020;
-    private final int CODIGO_VENDEDOR_021 = 021;
+    private final int CODIGO_VENDEDOR_020 = 20;
+    private final int CODIGO_VENDEDOR_021 = 21;
     private final String NOME_ARQUIVO = "test/br/edu/unirio/pm/dao/dadosDeVendas.txt";
     private List<Venda> vendas;
 
@@ -49,16 +51,17 @@ public class VendasDAOTest {
     }
     
     @Test
-    public void dadoUmaListaComVendasVerificaAsVendaNaPrimeiraPosicaoDaLista(){
+    public void dadoUmaListaComVendasVerificaAVendaNaPrimeiraPosicaoDaLista(){
         Venda venda = vendas.get(0);
         assertEquals(DATA_VENDA_10_05_2013, venda.getDataVenda());
         assertEquals(QUANTIDADA_PRODUTOS_30, venda.getQuantidadeVendida());
         assertEquals(CODIGO_PRODUTO_COM_FINAL_036, venda.getProduto().getCodigo());
+        System.out.println(venda.getVendedor().getCodigo());
         assertEquals(CODIGO_VENDEDOR_020, venda.getVendedor().getCodigo());
     }
     
     @Test
-    public void dadoUmaListaComVendasVerificaAsVendaNaQuintaPosicaoDaLista(){
+    public void dadoUmaListaComVendasVerificaAVendaNaQuintaPosicaoDaLista(){
         Venda venda = vendas.get(4);
         assertEquals(DATA_VENDA_12_05_2013, venda.getDataVenda());
         assertEquals(QUANTIDADA_PRODUTOS_30, venda.getQuantidadeVendida());
@@ -67,7 +70,7 @@ public class VendasDAOTest {
     }
     
     @Test
-    public void dadoUmaListaComVendasVerificaAsVendaNaDecimaPosicaoDaLista(){
+    public void dadoUmaListaComVendasVerificaAVendaNaDecimaPosicaoDaLista(){
         Venda venda = vendas.get(9);
         assertEquals(DATA_VENDA_01_06_2013, venda.getDataVenda());
         assertEquals(QUANTIDADA_PRODUTOS_50, venda.getQuantidadeVendida());
@@ -76,7 +79,7 @@ public class VendasDAOTest {
     }
     
     @Test
-    public void dadoUmaListaComVendasVerificaAsVendaNaDecimaQuintaPosicaoDaLista(){
+    public void dadoUmaListaComVendasVerificaAVendaNaDecimaQuintaPosicaoDaLista(){
         Venda venda = vendas.get(14);
         assertEquals(DATA_VENDA_02_06_2013, venda.getDataVenda());
         assertEquals(QUANTIDADA_PRODUTOS_50, venda.getQuantidadeVendida());
@@ -85,7 +88,7 @@ public class VendasDAOTest {
     }
     
     @Test
-    public void dadoUmaListaComVendasVerificaAsVendaNaDecimaOitavaPosicaoDaLista(){
+    public void dadoUmaListaComVendasVerificaAVendaNaDecimaOitavaPosicaoDaLista(){
         Venda venda = vendas.get(17);
         assertEquals(DATA_VENDA_10_07_2013, venda.getDataVenda());
         assertEquals(QUANTIDADA_PRODUTOS_50, venda.getQuantidadeVendida());
@@ -94,7 +97,7 @@ public class VendasDAOTest {
     }
     
     @Test
-    public void dadoUmaListaComVendasVerificaAsVendaNaUltimaPosicaoDaLista(){
+    public void dadoUmaListaComVendasVerificaAVendaNaUltimaPosicaoDaLista(){
         Venda venda = vendas.get(23);
         assertEquals(DATA_VENDA_12_07_2013, venda.getDataVenda());
         assertEquals(QUANTIDADA_PRODUTOS_80, venda.getQuantidadeVendida());
