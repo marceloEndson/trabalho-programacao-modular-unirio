@@ -15,11 +15,7 @@ import br.edu.unirio.pm.model.Produto;
 import br.edu.unirio.pm.resource.FabricaConexao;
 import br.edu.unirio.pm.util.Parser;
 import br.edu.unirio.pm.util.ParserProduto;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.joda.time.LocalDate;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 
 /**
  *

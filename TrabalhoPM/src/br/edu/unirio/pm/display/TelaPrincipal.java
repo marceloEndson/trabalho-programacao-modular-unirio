@@ -8,20 +8,14 @@ package br.edu.unirio.pm.display;
 
 import java.beans.PropertyVetoException;
 import java.io.File;
-import java.sql.SQLException;
-import java.util.List;
 
 import javax.swing.JFileChooser;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 
-import br.edu.unirio.pm.model.Vendedor;
-import br.edu.unirio.pm.dao.AbstractArquivosDAO;
-import br.edu.unirio.pm.dao.ProdutosDAO;
-import br.edu.unirio.pm.dao.VendedoresDAO;
-import br.edu.unirio.pm.model.Produto;
 import br.edu.unirio.pm.service.ServicosProdutos;
 import br.edu.unirio.pm.service.ServicosVendas;
+import br.edu.unirio.pm.service.ServicosVendedores;
 
 
 /**
@@ -34,6 +28,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private File arquivoSelecionado;
     private ServicosProdutos servicosProduto = new ServicosProdutos();
     private ServicosVendas servicosVendas = new ServicosVendas();
+    private ServicosVendedores servicosVendedores = new ServicosVendedores();
 
     /**
      * Creates new form TelaInicial
@@ -185,28 +180,10 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private void importarVendedoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_importarVendedoresActionPerformed
         arquivoSelecionado = exibirSeletorArquivo("Importar Vendedores");
         if (arquivoSelecionado!=null){
-        	AbstractArquivosDAO leitor = new VendedoresDAO();
-        	
-        	List<Vendedor> lstVendedor = leitor.getObjetos(arquivoSelecionado.getAbsolutePath());
-        	VendedoresDAO dao = new VendedoresDAO();
-        	boolean ocorreuErro=false;
-        	for (Vendedor vendedor:lstVendedor){
-        		try {
-				dao.inserirVendedor(vendedor);
-			          		
-			} catch (SQLException e) {
-				// Notificar erro caso ocorra problemas na conexao ou na leitura do arquivo
-			        exibirMensagemDialogo("Ocorreu o Seguinte Erro: " + e.getMessage() + " ao carregar o vendedor " + vendedor.getNome());
-				e.printStackTrace();
-				ocorreuErro=true;
-			}
-        	}
-		if (!ocorreuErro) {
-			exibirMensagemDialogo("Dados foram carregados com Sucesso!");
-		}
-			
-        }
-        
+            String mensagem = servicosVendedores.importarVendedoresDoArquivo(arquivoSelecionado.getAbsolutePath());
+            exibirMensagemDialogo(mensagem);
+        }else
+            exibirMensagemDialogo("Arquivo inválido.");        
     }//GEN-LAST:event_importarVendedoresActionPerformed
 
     private void importarVendasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_importarVendasActionPerformed

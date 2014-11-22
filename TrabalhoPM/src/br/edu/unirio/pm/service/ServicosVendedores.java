@@ -8,11 +8,13 @@ package br.edu.unirio.pm.service;
 
 import br.edu.unirio.pm.dao.AbstractArquivosDAO;
 import br.edu.unirio.pm.dao.VendedoresDAO;
+import br.edu.unirio.pm.model.Produto;
+import br.edu.unirio.pm.model.Venda;
 import br.edu.unirio.pm.model.Vendedor;
-import br.edu.unirio.pm.resource.BDVendedoresXml;
+import java.sql.SQLException;
+import java.util.ArrayList;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 /**
  *
@@ -20,14 +22,24 @@ import java.util.Map;
  */
 public class ServicosVendedores {
     
-    private AbstractArquivosDAO vendedoresDAO;
-    private BDVendedoresXml bdVendedoresXml;    
-    private Map<Integer, Vendedor> mapaCodigoVendedores;
+    private VendedoresDAO vendedoresDAO;    
+    private List<Vendedor> listaVendedores;
 
     public ServicosVendedores() {
     	  vendedoresDAO = new VendedoresDAO();
-          bdVendedoresXml = new BDVendedoresXml();
-          mapaCodigoVendedores = new HashMap<>();
+          listaVendedores = new ArrayList<>();
+    }
+    
+    public String importarVendedoresDoArquivo(String nomeArquivo){
+        listaVendedores = vendedoresDAO.getObjetos(nomeArquivo);
+        for (Vendedor vendedor : listaVendedores){
+            try{
+                vendedoresDAO.inserirVendedor(vendedor);
+            } catch (SQLException e){
+                return "Ocorreu o seguinte erro ao carregar o registro " + vendedor.getCodigo() + ": " + e.getMessage();
+            }
+        }
+        return "Dados foram carregados com Sucesso!";
     }
     
     
@@ -38,20 +50,8 @@ public class ServicosVendedores {
 	}
 
 
-	public void setVendedoresDAO(AbstractArquivosDAO vendedoresDAO) {
+	public void setVendedoresDAO(VendedoresDAO vendedoresDAO) {
 		this.vendedoresDAO = vendedoresDAO;
-	}
-
-
-
-	public BDVendedoresXml getBdVendedoresXml() {
-		return bdVendedoresXml;
-	}
-
-
-
-	public void setBdVendedoresXml(BDVendedoresXml bdVendedoresXml) {
-		this.bdVendedoresXml = bdVendedoresXml;
 	}
 
 

@@ -9,8 +9,6 @@ package br.edu.unirio.pm.dao;
 import br.edu.unirio.pm.model.Venda;
 import java.util.List;
 import org.joda.time.LocalDate;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;

@@ -8,7 +8,6 @@ package br.edu.unirio.pm.service;
 
 import br.edu.unirio.pm.dao.ProdutosDAO;
 import br.edu.unirio.pm.model.Produto;
-import br.edu.unirio.pm.resource.BDProdutosXml;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
