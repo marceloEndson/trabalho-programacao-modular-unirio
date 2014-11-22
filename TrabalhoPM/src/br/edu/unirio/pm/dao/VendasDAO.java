@@ -25,8 +25,13 @@ import org.joda.time.LocalDate;
 public class VendasDAO extends AbstractArquivosDAO<Venda> {
     
     private PreparedStatement comando;
+    private String consulta;
+    private ResultSet resultado;
     private final String INSERT = "insert into venda (data_venda, quantidade, cod_vendedor, cod_produto)"
             + "values (?, ?, ?, ?)";
+    private final String SELECT_MES_ESPECIFICO = "select * from venda where data_venda between ? and ?";
+    private final String SELECT_MAX_DATA = "select max (data_venda) from venda";
+    private final String SELECT_MIN_DATA = "select min (data_venda) from venda";
     private List<Venda> listaVendasDoMes = new ArrayList<>();
 
     @Override
@@ -51,16 +56,18 @@ public class VendasDAO extends AbstractArquivosDAO<Venda> {
     }
     
     public List<Venda> obterVendasDoMes(MesEscolhido mesEscolhido) throws SQLException{
-        String consulta = "select * from venda where data_venda between ? and ?";
-        ProdutosDAO produtosDAO = new ProdutosDAO();
-        VendedoresDAO vendedoresDAO = new VendedoresDAO();
-        FabricaConexao.iniciarConexao();
-        comando = FabricaConexao.criarComando(consulta);
-        LocalDate dataInicialDoMes = new LocalDate(mesEscolhido.getAno(), mesEscolhido.getMes(), 1);
-        LocalDate dataFinalDoMes = new LocalDate(mesEscolhido.getAno(), mesEscolhido.getMes(), obterQuantidadeDeDiasDoMes(mesEscolhido));
-        comando.setDate(1, Date.valueOf(dataInicialDoMes.toString()));
-        comando.setDate(2, Date.valueOf(dataFinalDoMes.toString()));
-        ResultSet resultado = comando.executeQuery();
+        comando = null;
+        try{
+            consulta = SELECT_MES_ESPECIFICO;
+            ProdutosDAO produtosDAO = new ProdutosDAO();
+            VendedoresDAO vendedoresDAO = new VendedoresDAO();
+            FabricaConexao.iniciarConexao();
+            comando = FabricaConexao.criarComando(consulta);
+            LocalDate dataInicialDoMes = new LocalDate(mesEscolhido.getAno(), mesEscolhido.getMes(), 1);
+            LocalDate dataFinalDoMes = new LocalDate(mesEscolhido.getAno(), mesEscolhido.getMes(), mesEscolhido.obterQuantidadeDeDiasDoMes());
+            comando.setDate(1, Date.valueOf(dataInicialDoMes.toString()));
+            comando.setDate(2, Date.valueOf(dataFinalDoMes.toString()));
+            resultado = comando.executeQuery();
         while (resultado.next()){
             Venda venda = new Venda();
             venda.setDataVenda(new LocalDate(resultado.getDate("DATA_VENDA")));
@@ -70,19 +77,42 @@ public class VendasDAO extends AbstractArquivosDAO<Venda> {
             listaVendasDoMes.add(venda);            
         }
         return listaVendasDoMes;
+        } finally {
+		FabricaConexao.fecharComando(comando);
+		FabricaConexao.fecharConexao();
+	}  
     }
     
-    public int obterQuantidadeDeDiasDoMes(MesEscolhido mesEscolhido){
-        if (mesEscolhido.getMes() == 2 && mesEscolhido.getAno() % 4 == 0) // Anos bissextos são múltiplos de 4.
-            return 29;
-        else if (mesEscolhido.getMes() == 2)
-            return 28;
-        else if (mesEscolhido.getMes() == 1 || mesEscolhido.getMes() == 3 ||
-                mesEscolhido.getMes() == 5 || mesEscolhido.getMes() == 7 ||
-                mesEscolhido.getMes() == 8 || mesEscolhido.getMes() == 10 ||
-                mesEscolhido.getMes() == 12)
-            return 31;
-        return 30;
+    public LocalDate obterDataDaVendaMaisAtual() throws SQLException{
+        try{
+            consulta = SELECT_MAX_DATA;
+            LocalDate dataVendaMaisAtual = LocalDate.now();
+            FabricaConexao.iniciarConexao();
+            comando = FabricaConexao.criarComando(consulta);
+            resultado = comando.executeQuery();
+            while(resultado.next())
+                dataVendaMaisAtual = new LocalDate(resultado.getDate(1));
+            return dataVendaMaisAtual;
+        } finally {
+		FabricaConexao.fecharComando(comando);
+		FabricaConexao.fecharConexao();
+	}        
+    }
+    
+    public LocalDate obterDataDaVendaMaisAntiga() throws SQLException{
+        try{
+            consulta = SELECT_MIN_DATA;
+            LocalDate dataVendaMaisAntiga = LocalDate.now();
+            FabricaConexao.iniciarConexao();
+            comando = FabricaConexao.criarComando(consulta);
+            resultado = comando.executeQuery();
+            while(resultado.next())
+                dataVendaMaisAntiga = new LocalDate (resultado.getDate(1));
+            return dataVendaMaisAntiga;
+        } finally {
+		FabricaConexao.fecharComando(comando);
+		FabricaConexao.fecharConexao();
+	}        
     }
 
 }

@@ -17,6 +17,11 @@ public class MesEscolhido {
     public MesEscolhido() {
     }
 
+    public MesEscolhido(int ano, int mes) {
+        this.ano = ano;
+        this.mes = mes;
+    }
+
     public int getAno() {
         return ano;
     }
@@ -31,6 +36,17 @@ public class MesEscolhido {
 
     public void setMes(int mes) {
         this.mes = mes;
+    }
+    
+    public int obterQuantidadeDeDiasDoMes(){
+        if (mes == 2 && ano % 4 == 0) // Anos bissextos são múltiplos de 4.
+            return 29;
+        else if (mes == 2)
+            return 28;
+        else if (mes == 1 || mes == 3 || mes == 5 || mes == 7 || mes == 8 || 
+                mes == 10 || mes == 12)
+            return 31;
+        return 30;
     }
     
 }

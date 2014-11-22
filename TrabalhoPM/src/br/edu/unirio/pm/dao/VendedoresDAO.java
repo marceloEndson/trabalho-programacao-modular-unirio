@@ -13,6 +13,8 @@ import br.edu.unirio.pm.model.Vendedor;
 import br.edu.unirio.pm.resource.FabricaConexao;
 import br.edu.unirio.pm.util.Parser;
 import br.edu.unirio.pm.util.ParserVendedor;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author rogerio.silva
@@ -26,7 +28,8 @@ public class VendedoresDAO extends AbstractArquivosDAO<Vendedor> {
     private PreparedStatement comando;
     private final String INSERT = "insert into VENDEDOR (codigo, nome, categoria)"
             + "values (?, ?, ?)";
-    private final String SELECT = "select * from VENDEDOR where codigo = ?";
+    private final String SELECT_VENDEDOR_ESPECIFICO = "select * from VENDEDOR where codigo = ?";
+    private final String SELECT_TODOS = "select * from VENDEDOR";
     private final String UPDATE_NOME_CATEGORIA = "update VENDEDOR set nome=?, "
             + "categoria=? where codigo = ?";
 
@@ -43,7 +46,7 @@ public class VendedoresDAO extends AbstractArquivosDAO<Vendedor> {
      * @throws SQLException
      */
     public boolean inserirVendedor(Vendedor vendedor) throws SQLException {
-        PreparedStatement comando = null;
+        comando = null;
         try {
             if (vendedorEstaNoBanco(vendedor.getCodigo())) {
                 atualizarNomeVendedor(vendedor);
@@ -64,11 +67,11 @@ public class VendedoresDAO extends AbstractArquivosDAO<Vendedor> {
     }
 
     public boolean vendedorEstaNoBanco(long codigoVendedor) throws SQLException {
-        PreparedStatement comando = null;
+        comando = null;
 
         try {
             FabricaConexao.iniciarConexao();
-            comando = FabricaConexao.criarComando(SELECT);
+            comando = FabricaConexao.criarComando(SELECT_VENDEDOR_ESPECIFICO);
             comando.setLong(1, codigoVendedor);
             resultado = comando.executeQuery();
             if (resultado.next()) {
@@ -83,7 +86,7 @@ public class VendedoresDAO extends AbstractArquivosDAO<Vendedor> {
     }
 
     public void atualizarNomeVendedor(Vendedor vendedor) throws SQLException {
-        PreparedStatement comando = null;
+        comando = null;
 
         try {
             FabricaConexao.iniciarConexao();
@@ -102,7 +105,7 @@ public class VendedoresDAO extends AbstractArquivosDAO<Vendedor> {
 
     public Vendedor buscarVendedorNoBanco(long codigoVendedor) throws SQLException {
         FabricaConexao.iniciarConexao();
-        comando = FabricaConexao.criarComando(SELECT);
+        comando = FabricaConexao.criarComando(SELECT_VENDEDOR_ESPECIFICO);
         comando.setLong(1, codigoVendedor);
         resultado = comando.executeQuery();
         while (resultado.next()) {
@@ -115,6 +118,27 @@ public class VendedoresDAO extends AbstractArquivosDAO<Vendedor> {
             }
         }
         return null;
+
+    }
+    
+    public List<Vendedor> obterListaVendedores() throws SQLException {
+        List<Vendedor> listaVendedores = new ArrayList<>();
+        try {
+            FabricaConexao.iniciarConexao();
+            comando = FabricaConexao.criarComando(SELECT_TODOS);
+            resultado = comando.executeQuery();
+            while (resultado.next()) {
+                Vendedor vendedor = new Vendedor();
+                vendedor.setCategoria(resultado.getInt("CATEGORIA"));
+                vendedor.setCodigo(resultado.getLong("CODIGO"));
+                vendedor.setNome(resultado.getString("NOME"));
+                listaVendedores.add(vendedor);
+            }
+            return listaVendedores;
+        } finally {
+            FabricaConexao.fecharComando(comando);
+            FabricaConexao.fecharConexao();
+        }
 
     }
 

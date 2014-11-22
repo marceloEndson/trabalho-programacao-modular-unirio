@@ -6,17 +6,59 @@
 
 package br.edu.unirio.pm.display;
 
+import br.edu.unirio.pm.model.Vendedor;
+import br.edu.unirio.pm.service.MesEscolhido;
+import br.edu.unirio.pm.service.ServicosComissoes;
+import br.edu.unirio.pm.service.ServicosVendas;
+import br.edu.unirio.pm.service.ServicosVendedores;
+import java.sql.SQLException;
+import java.text.NumberFormat;
+import java.util.Arrays;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Felipe
  */
 public class TelaTotaisVendasComissoesPorMes extends javax.swing.JInternalFrame {
+    
+    private ServicosVendas servicosVendas;
+    private ServicosComissoes servicosComissoes;
+    private ServicosVendedores servicosVendedores;
+    private DefaultTableModel modeloTabela;
+    private double totalVendaMensal;
+    private double totalComissaoMensal;
 
     /**
      * Creates new form TelaTotaisVendasComissoesPorMes
      */
     public TelaTotaisVendasComissoesPorMes() {
+        servicosVendas = new ServicosVendas();
+        servicosComissoes = new ServicosComissoes();
+        servicosVendedores = new ServicosVendedores();
         initComponents();
+        preencherMeses();
+        preencherAnos();
+        iniciarTabela();
+    }
+    
+    private void preencherMeses(){
+        for (int mes = 1; mes<=12; mes++)
+            selecioneMes.addItem(mes);
+    }
+    
+    private void preencherAnos(){
+        try {
+            List<Integer> listaAnosDisponiveisParaConsulta = servicosVendas.obterAnosDisponiveisParaConsulta();
+            for (int ano : listaAnosDisponiveisParaConsulta)
+                selecioneAno.addItem(ano);
+        } catch (SQLException ex) {
+            exibirMensagemDialogo("Ocorreu o seguinte erro: " + ex.getMessage());
+        }
     }
 
     /**
@@ -29,9 +71,9 @@ public class TelaTotaisVendasComissoesPorMes extends javax.swing.JInternalFrame 
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox();
+        selecioneAno = new javax.swing.JComboBox();
         jLabel2 = new javax.swing.JLabel();
-        jComboBox2 = new javax.swing.JComboBox();
+        selecioneMes = new javax.swing.JComboBox();
         jScrollPane1 = new javax.swing.JScrollPane();
         tabelaTotaisVendasComissoesPorMes = new javax.swing.JTable();
         botaoOk = new javax.swing.JButton();
@@ -46,11 +88,7 @@ public class TelaTotaisVendasComissoesPorMes extends javax.swing.JInternalFrame 
 
         jLabel1.setText("Ano");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
         jLabel2.setText("Mês");
-
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         tabelaTotaisVendasComissoesPorMes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -66,6 +104,11 @@ public class TelaTotaisVendasComissoesPorMes extends javax.swing.JInternalFrame 
         jScrollPane1.setViewportView(tabelaTotaisVendasComissoesPorMes);
 
         botaoOk.setText("OK");
+        botaoOk.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botaoOkActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -78,11 +121,11 @@ public class TelaTotaisVendasComissoesPorMes extends javax.swing.JInternalFrame 
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(selecioneAno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(selecioneMes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(botaoOk)
                         .addGap(0, 0, Short.MAX_VALUE)))
@@ -94,9 +137,9 @@ public class TelaTotaisVendasComissoesPorMes extends javax.swing.JInternalFrame 
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(selecioneAno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2)
-                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(selecioneMes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(botaoOk))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 407, Short.MAX_VALUE)
@@ -106,14 +149,55 @@ public class TelaTotaisVendasComissoesPorMes extends javax.swing.JInternalFrame 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void botaoOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoOkActionPerformed
 
+        MesEscolhido mesEscolhido = verificarMesEscolhido();
+        System.out.println(mesEscolhido.getMes());
+        iniciarTabela();
+        try {
+            List<Vendedor> listaVendedores = servicosVendedores.obterListaVendedores();
+            for (Vendedor vendedor : listaVendedores){
+                inserirDadosDoVendedorNaTabela(vendedor, mesEscolhido);
+            }
+        } catch (SQLException ex) {
+            exibirMensagemDialogo(ex.getMessage());
+        }
+        servicosComissoes = new ServicosComissoes();
+    }//GEN-LAST:event_botaoOkActionPerformed
+
+    private void iniciarTabela(){
+        String[][] dadosTabela = {};
+        String[] cabecalhoTabela = {"Nome do Vendedor", "Total de Vendas", "Total de Comissões"};
+        modeloTabela = new DefaultTableModel(dadosTabela, cabecalhoTabela);
+        tabelaTotaisVendasComissoesPorMes.setModel(modeloTabela);
+    }
+    
+    private void inserirDadosDoVendedorNaTabela(Vendedor vendedor, MesEscolhido mesEscolhido) throws SQLException{
+        String nomeVendedor = vendedor.getNome();
+        totalVendaMensal = servicosComissoes.obterTotalVendaMensalPorVendedor(vendedor, mesEscolhido);
+        totalComissaoMensal = servicosComissoes.obterComissaoMensalPorVendedor(vendedor, mesEscolhido);
+        Object dados[] = {nomeVendedor, NumberFormat.getCurrencyInstance().format(totalVendaMensal), NumberFormat.getCurrencyInstance().format(totalComissaoMensal)};
+        modeloTabela.addRow(dados);
+    }
+    
+    private MesEscolhido verificarMesEscolhido(){
+        int ano = (int)selecioneAno.getSelectedItem();
+        int mes = (int)selecioneMes.getSelectedItem();
+        MesEscolhido mesEscolhido = new MesEscolhido(ano, mes);
+        return mesEscolhido;
+    }
+    
+    private void exibirMensagemDialogo(String textoMensagem){
+        JOptionPane.showMessageDialog(null, textoMensagem);
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botaoOk;
-    private javax.swing.JComboBox jComboBox1;
-    private javax.swing.JComboBox jComboBox2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JComboBox selecioneAno;
+    private javax.swing.JComboBox selecioneMes;
     private javax.swing.JTable tabelaTotaisVendasComissoesPorMes;
     // End of variables declaration//GEN-END:variables
 }

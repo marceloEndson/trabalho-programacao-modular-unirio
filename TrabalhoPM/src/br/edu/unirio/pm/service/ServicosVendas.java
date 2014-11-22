@@ -13,6 +13,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.joda.time.LocalDate;
 
 /**
  *
@@ -50,6 +53,16 @@ public class ServicosVendas {
             return "Falha ao importar os dados.";
         else
             return "Dados foram carregados com Sucesso!";
+    }
+    
+    public List<Integer> obterAnosDisponiveisParaConsulta() throws SQLException{
+        List<Integer> anosDisponiveisParaConsulta = new ArrayList<>();
+        LocalDate dataInicial = vendasDAO.obterDataDaVendaMaisAntiga();
+        LocalDate dataFinal = vendasDAO.obterDataDaVendaMaisAtual();
+        for (int ano = dataInicial.getYear(); ano <= dataFinal.getYear(); ano++){
+            anosDisponiveisParaConsulta.add(ano);
+        }
+        return anosDisponiveisParaConsulta;    
     }
 
 

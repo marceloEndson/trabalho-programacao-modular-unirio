@@ -28,10 +28,10 @@ public class ServicosComissoes {
     
     public double obterComissaoMensalPorVendedor(Vendedor vendedor, MesEscolhido mesEscolhido) throws SQLException{
         double totalVendaMensal = obterTotalVendaMensalPorVendedor(vendedor, mesEscolhido);
-        double totalComissaoMes;
+        double totalComissaoMes = 0;
         if (vendedor.getCategoria() == 1)
             totalComissaoMes = calcularComissaoVendedorCategoria1(totalVendaMensal);
-        else
+        else if (vendedor.getCategoria() == 2)
             totalComissaoMes = calcularComissaoVendedorCategoria2(totalVendaMensal);
         return totalComissaoMes;
         
@@ -42,7 +42,7 @@ public class ServicosComissoes {
         double totalVendaMensal = 0;
         for (Venda venda : listaVendas){
             if (vendaPertenceAoVendedor(venda, vendedor))
-                totalVendaMensal += venda.getQuantidadeVendida() * venda.getProduto().getPreco();
+                totalVendaMensal += (venda.getQuantidadeVendida() * venda.getProduto().getPreco());
         }
         return totalVendaMensal;
         

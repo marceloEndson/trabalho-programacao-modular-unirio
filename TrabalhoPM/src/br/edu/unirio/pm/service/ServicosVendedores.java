@@ -8,8 +8,6 @@ package br.edu.unirio.pm.service;
 
 import br.edu.unirio.pm.dao.AbstractArquivosDAO;
 import br.edu.unirio.pm.dao.VendedoresDAO;
-import br.edu.unirio.pm.model.Produto;
-import br.edu.unirio.pm.model.Venda;
 import br.edu.unirio.pm.model.Vendedor;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -40,6 +38,11 @@ public class ServicosVendedores {
             }
         }
         return "Dados foram carregados com Sucesso!";
+    }
+    
+    public List<Vendedor> obterListaVendedores() throws SQLException{
+        listaVendedores = vendedoresDAO.obterListaVendedores();
+        return listaVendedores;
     }
     
     
