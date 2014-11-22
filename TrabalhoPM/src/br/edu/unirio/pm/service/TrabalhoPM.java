@@ -37,12 +37,19 @@ public class TrabalhoPM {
         }
         try {
             double comissao = svc.obterComissaoMensalPorVendedor(vendedor, mes);
-            System.out.println(comissao);
+            System.out.println("Comissao: " + comissao);
         } catch (SQLException ex) {
             Logger.getLogger(TrabalhoPM.class.getName()).log(Level.SEVERE, null, ex);
             System.out.println("Falha no calculo da comissao");
         }
-        // Esta classe provavelmente será deletada.
+        try {
+            double total = svc.obterTotalVendaMensalPorVendedor(vendedor, mes);
+            System.out.println("Total das vendas:" + total);
+            // Esta classe provavelmente será deletada.
+        } catch (SQLException ex) {
+            Logger.getLogger(TrabalhoPM.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("Falha no calculo do total");
+        }
     }
 
     

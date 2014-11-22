@@ -27,8 +27,7 @@ public class ServicosComissoes {
     
     
     public double obterComissaoMensalPorVendedor(Vendedor vendedor, MesEscolhido mesEscolhido) throws SQLException{
-        List<Venda> listaVendas = vendasDAO.obterVendasDoMes(mesEscolhido);
-        double totalVendaMensal = obterTotalVendaMensalPorVendedor(listaVendas, vendedor);
+        double totalVendaMensal = obterTotalVendaMensalPorVendedor(vendedor, mesEscolhido);
         double totalComissaoMes;
         if (vendedor.getCategoria() == 1)
             totalComissaoMes = calcularComissaoVendedorCategoria1(totalVendaMensal);
@@ -38,7 +37,8 @@ public class ServicosComissoes {
         
     }
     
-    private double obterTotalVendaMensalPorVendedor(List<Venda> listaVendas, Vendedor vendedor){
+    public double obterTotalVendaMensalPorVendedor(Vendedor vendedor, MesEscolhido mesEscolhido) throws SQLException{
+        List<Venda> listaVendas = vendasDAO.obterVendasDoMes(mesEscolhido);
         double totalVendaMensal = 0;
         for (Venda venda : listaVendas){
             if (vendaPertenceAoVendedor(venda, vendedor))
