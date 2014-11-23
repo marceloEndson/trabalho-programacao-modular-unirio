@@ -10,7 +10,6 @@ import br.edu.unirio.pm.resource.FabricaConexao;
 import br.edu.unirio.pm.service.MesEscolhido;
 import br.edu.unirio.pm.util.Parser;
 import br.edu.unirio.pm.util.ParserVenda;
-import java.sql.Array;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -33,7 +32,7 @@ public class VendasDAO extends AbstractArquivosDAO<Venda> {
     private final String SELECT_MES_ESPECIFICO = "select * from venda where data_venda between ? and ?";
     private final String SELECT_MAX_DATA = "select max (data_venda) from venda";
     private final String SELECT_MIN_DATA = "select min (data_venda) from venda";
-    private List<Venda> listaVendasDoMes = new ArrayList<Venda>();
+    private List<Venda> listaVendasDoMes = new ArrayList<>();
 
     @Override
     public Parser<Venda> getParser() {
@@ -66,8 +65,8 @@ public class VendasDAO extends AbstractArquivosDAO<Venda> {
             comando = FabricaConexao.criarComando(consulta);
             LocalDate dataInicialDoMes = new LocalDate(mesEscolhido.getAno(), mesEscolhido.getMes(), 1);
             LocalDate dataFinalDoMes = new LocalDate(mesEscolhido.getAno(), mesEscolhido.getMes(), mesEscolhido.obterQuantidadeDeDiasDoMes());
-            System.out.println("DATA INICIAL " + dataInicialDoMes);
-            System.out.println("DATA FINAL " + dataFinalDoMes);    
+          //System.out.println("DATA INICIAL " + dataInicialDoMes);
+          //System.out.println("DATA FINAL " + dataFinalDoMes);    
             comando.setDate(1, Date.valueOf(dataInicialDoMes.toString()));
             comando.setDate(2, Date.valueOf(dataFinalDoMes.toString()));
             resultado = comando.executeQuery();
@@ -77,14 +76,20 @@ public class VendasDAO extends AbstractArquivosDAO<Venda> {
             venda.setProduto(produtosDAO.buscarProdutoNoBanco(resultado.getLong("COD_PRODUTO")));
             venda.setQuantidadeVendida(resultado.getInt("QUANTIDADE"));
             venda.setVendedor(vendedoresDAO.buscarVendedorNoBanco(resultado.getLong("COD_VENDEDOR")));
-            listaVendasDoMes.add(venda);            
+            if(vendaPertenceAListaVendasDoMes(venda)){
+                listaVendasDoMes.add(venda);
+            }            
         }
-        imprimeListaDoMes(listaVendasDoMes);    //IMPRIME
+        // imprimeListaDoMes(listaVendasDoMes);    //IMPRIME
         return listaVendasDoMes;
         } finally {
 		FabricaConexao.fecharComando(comando);
 		FabricaConexao.fecharConexao();
 	}  
+    }
+    
+    private boolean vendaPertenceAListaVendasDoMes(Venda venda){
+        return !listaVendasDoMes.contains(venda);
     }
     
     public LocalDate obterDataDaVendaMaisAtual() throws SQLException{
@@ -119,10 +124,15 @@ public class VendasDAO extends AbstractArquivosDAO<Venda> {
 	}        
     }
 
+    /*
     private void imprimeListaDoMes(List<Venda> listaVendasDoMes) {
         for(Venda venda : listaVendasDoMes){
-            System.out.println("VENDA -->  " + venda.getDataVenda());
+            System.out.println("DATA -->  " + venda.getDataVenda());
+            System.out.println("QUANTIDADE -->  " + venda.getQuantidadeVendida());
+            System.out.println("PRODUTO -->  " + venda.getProduto().getCodigo());
+            System.out.println("VENDEDOR -->  " + venda.getVendedor().getCodigo());
         }
-    }
+    } 
+    */
 
 }

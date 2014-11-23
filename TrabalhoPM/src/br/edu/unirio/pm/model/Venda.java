@@ -6,6 +6,7 @@
 
 package br.edu.unirio.pm.model;
 
+import java.util.Objects;
 import org.joda.time.LocalDate;
 
 /**
@@ -61,5 +62,27 @@ public class Venda {
         this.quantidadeVendida = quantidadeVendida;
     }
 
-  
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Venda other = (Venda) obj;
+        if (!Objects.equals(this.dataVenda, other.dataVenda)) {
+            return false;
+        }
+        if (this.quantidadeVendida != other.quantidadeVendida) {
+            return false;
+        }
+        if (!Objects.equals(this.produto, other.produto)) {
+            return false;
+        }
+        if (!Objects.equals(this.vendedor, other.vendedor)) {
+            return false;
+        }
+        return true;
+    } 
 }
