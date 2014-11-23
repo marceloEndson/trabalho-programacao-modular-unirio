@@ -49,4 +49,33 @@ public class MesEscolhido {
         return 30;
     }
     
+    public void acrescentarUmMes(){
+        if (mes<12)
+            mes++;
+        else{
+            mes = 1;
+            ano++;
+        }
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final MesEscolhido other = (MesEscolhido) obj;
+        if (this.ano != other.ano) {
+            return false;
+        }
+        if (this.mes != other.mes) {
+            return false;
+        }
+        return true;
+    }
+    
+    
+    
 }

@@ -30,7 +30,8 @@ public class TrabalhoPM {
     public static void main(String[] args) throws SQLException {
         ServicosComissoes svc = new ServicosComissoes();
         ServicosVendas svcVendas = new ServicosVendas();
-        MesEscolhido mes = new MesEscolhido(2013, 6);
+        MesEscolhido mes = new MesEscolhido(2013, 5);
+        MesEscolhido mesFinal = new MesEscolhido(2013, 7);
         VendedoresDAO dao = new VendedoresDAO();
         VendasDAO vendasDao = new VendasDAO();
         //mes.setAno(2013);
@@ -38,33 +39,56 @@ public class TrabalhoPM {
         Vendedor vendedor = new Vendedor();
         
         
-        List<Venda> listaVendas = vendasDao.obterVendasDoMes(mes);
+        /*List<Venda> listaVendas = vendasDao.obterVendasDoMes(mes);
         for (Venda venda : listaVendas){
             System.out.println(venda.getDataVenda() + " " + venda.getProduto().getCodigo() + " " + venda.getVendedor().getNome());
-        }
+        }*/
         
         try {
             vendedor = dao.buscarVendedorNoBanco(21L);
+            System.out.println("busca de vendedor: " + vendedor.getNome());
         } catch (SQLException ex) {
             Logger.getLogger(TrabalhoPM.class.getName()).log(Level.SEVERE, null, ex);
             System.out.println("Falha ao buscar vendedor.");
         }
         try {
+            svc = new ServicosComissoes();
+            svcVendas = new ServicosVendas();
             double comissao = svc.obterComissaoMensalPorVendedor(vendedor, mes);
-            System.out.println("Comissao: " + comissao);
+            System.out.println("Comissao de um mes: " + comissao);
         } catch (SQLException ex) {
             Logger.getLogger(TrabalhoPM.class.getName()).log(Level.SEVERE, null, ex);
             System.out.println("Falha no calculo da comissao");
         }
         try {
-            double total = svc.obterTotalVendaMensalPorVendedor(vendedor, mes);
-            System.out.println("Total das vendas:" + total);
-            // Esta classe provavelmente será deletada.
+            svc = new ServicosComissoes();
+            svcVendas = new ServicosVendas();
+            double comissao = svc.obterComissaoAcumuladaPorVendedor(mes, mesFinal, vendedor);
+            System.out.println("Comissao acumulada: " + comissao);
         } catch (SQLException ex) {
             Logger.getLogger(TrabalhoPM.class.getName()).log(Level.SEVERE, null, ex);
-            System.out.println("Falha no calculo do total");
+            System.out.println("Falha no calculo da comissao acumulada");
         }
         try {
+            svc = new ServicosComissoes();
+            svcVendas = new ServicosVendas();
+            double venda = svc.obterTotalVendaMensalPorVendedor(vendedor, mes);
+            System.out.println("Venda mensal: " + venda);
+        } catch (SQLException ex) {
+            Logger.getLogger(TrabalhoPM.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("Falha no calculo da venda");
+        }
+        try {
+            svc = new ServicosComissoes();
+            svcVendas = new ServicosVendas();
+            MesEscolhido mes2 = new MesEscolhido(2013, 5);
+            double venda = svc.obterVendaAcumuladaPorVendedor(mes2, mesFinal, vendedor);
+            System.out.println("Venda acumulada: " + venda);
+        } catch (SQLException ex) {
+            Logger.getLogger(TrabalhoPM.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("Falha no calculo da venda acumulada");
+        }
+        /*try {
             LocalDate date = vendasDao.obterDataDaVendaMaisAtual();
             LocalDate date2 = vendasDao.obterDataDaVendaMaisAntiga();
             System.out.println(date.getMonthOfYear() + " " + date2.getYear());
@@ -90,7 +114,7 @@ public class TrabalhoPM {
         } catch (SQLException ex) {
             Logger.getLogger(TrabalhoPM.class.getName()).log(Level.SEVERE, null, ex);
             System.out.println("Falha ao obter lista de vendedores");
-        }
+        }*/
         
     }
 

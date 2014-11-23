@@ -27,8 +27,9 @@ public class ServicosComissoes {
     
     
     public double obterComissaoMensalPorVendedor(Vendedor vendedor, MesEscolhido mesEscolhido) throws SQLException{
-        double totalVendaMensal = obterTotalVendaMensalPorVendedor(vendedor, mesEscolhido);
+        double totalVendaMensal = 0;
         double totalComissaoMes = 0;
+        totalVendaMensal = obterTotalVendaMensalPorVendedor(vendedor, mesEscolhido);
         if (vendedor.getCategoria() == 1)
             totalComissaoMes = calcularComissaoVendedorCategoria1(totalVendaMensal);
         else if (vendedor.getCategoria() == 2)
@@ -84,6 +85,30 @@ public class ServicosComissoes {
         else if (totalVendaMensal > 4000)
             return totalVendaMensal * 0.3;
         return 0;
+    }
+    
+    public double obterComissaoAcumuladaPorVendedor(MesEscolhido mesInicial, MesEscolhido mesFinal, Vendedor vendedor) throws SQLException{
+        double comissaoAcumulada = 0;
+        MesEscolhido mes = new MesEscolhido (mesInicial.getAno(), mesInicial.getMes());
+        comissaoAcumulada = obterComissaoMensalPorVendedor(vendedor, mesInicial);
+        while (!mes.equals(mesFinal)){
+            mes.acrescentarUmMes();
+            System.out.println("comissao acum parcial " + comissaoAcumulada);
+            comissaoAcumulada = obterComissaoMensalPorVendedor(vendedor, mes);
+        }
+        System.out.println("comissao acum parcial " + comissaoAcumulada);
+        return comissaoAcumulada;
+    }
+    
+    public double obterVendaAcumuladaPorVendedor(MesEscolhido mesInicial, MesEscolhido mesFinal, Vendedor vendedor) throws SQLException{
+        MesEscolhido mes = mesInicial;
+        double vendaAcumuladaPorVendedor = 0;
+        vendaAcumuladaPorVendedor += obterTotalVendaMensalPorVendedor(vendedor, mesInicial);
+        while(!mes.equals(mesFinal)){
+            mes.acrescentarUmMes();
+            vendaAcumuladaPorVendedor += obterTotalVendaMensalPorVendedor(vendedor, mes);   
+        }
+        return vendaAcumuladaPorVendedor;
     }
     
 }
