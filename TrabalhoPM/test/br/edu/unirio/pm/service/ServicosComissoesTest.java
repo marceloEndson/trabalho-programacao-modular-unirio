@@ -22,9 +22,9 @@ import org.junit.runner.RunWith;
 @RunWith(Theories.class)
 public class ServicosComissoesTest {
 
-    private final MesEscolhido mesEscolhido;
-    private final Vendedor vendedor;
-    private final double resultado;   
+    MesEscolhido mesEscolhido;
+    Vendedor vendedor;
+    double resultado;   
 
     public ServicosComissoesTest(MesEscolhido mesEscolhido, Vendedor vendedor, Double resultado) {
         this.mesEscolhido = mesEscolhido;
@@ -81,16 +81,16 @@ public class ServicosComissoesTest {
     @Theory
     public void testObterTotalVendaMensalPorVendedor(ServicosComissoesTest cenario) throws SQLException{
         Assume.assumeTrue(Arrays.asList(obterTotalVendaMensalPorVendedor).contains(cenario));
-        ServicosComissoes instance = new ServicosComissoes();
-        double totalVendas = instance.obterTotalVendaMensalPorVendedor(cenario.vendedor, cenario.mesEscolhido);
-        assertEquals(cenario.resultado, totalVendas, 0.01);
+        ServicosComissoes servicosComissoes = new ServicosComissoes();
+      //double totalVendas = instance.obterTotalVendaMensalPorVendedor(cenario.vendedor, cenario.mesEscolhido);
+        assertEquals(cenario.resultado, servicosComissoes.obterTotalVendaMensalPorVendedor(cenario.vendedor, cenario.mesEscolhido), 0.01);
     }
     
     @Theory
     public void testobterComissaoMensalPorVendedor (ServicosComissoesTest cenario) throws SQLException{
-        Assume.assumeTrue(Arrays.asList(obterTotalVendaMensalPorVendedor).contains(cenario));
-        ServicosComissoes instance = new ServicosComissoes();
-        double comissao = instance.obterComissaoMensalPorVendedor(cenario.vendedor, cenario.mesEscolhido);
-        assertEquals(cenario.resultado, comissao, 0.01);
+        Assume.assumeTrue(Arrays.asList(obterComissaoMensalPorVendedor).contains(cenario));
+        ServicosComissoes servicosComissoes = new ServicosComissoes();
+      //double comissao = instance.obterComissaoMensalPorVendedor(cenario.vendedor, cenario.mesEscolhido);
+        assertEquals(cenario.resultado, servicosComissoes.obterComissaoMensalPorVendedor(cenario.vendedor, cenario.mesEscolhido), 0.01);
     }
 }
