@@ -7,90 +7,259 @@ package br.edu.unirio.pm.service;
 
 import br.edu.unirio.pm.model.Vendedor;
 import java.sql.SQLException;
-import java.util.Arrays;
 import static org.junit.Assert.assertEquals;
-import org.junit.Assume;
-import org.junit.experimental.theories.DataPoints;
-import org.junit.experimental.theories.Theories;
-import org.junit.experimental.theories.Theory;
-import org.junit.runner.RunWith;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  *
  * @author MCE
  */
-@RunWith(Theories.class)
 public class ServicosComissoesTest {
 
-    MesEscolhido mesEscolhido;
-    Vendedor vendedor;
-    double resultado;   
+    private ServicosComissoes instance;
 
-    public ServicosComissoesTest(MesEscolhido mesEscolhido, Vendedor vendedor, Double resultado) {
-        this.mesEscolhido = mesEscolhido;
-        this.vendedor = vendedor;
-        this.resultado = resultado;
+    @Before
+    public void setUp() {
+        instance = new ServicosComissoes();
     }
 
-    @DataPoints
-    public static ServicosComissoesTest[] obterTotalVendaMensalPorVendedor = {
-        new ServicosComissoesTest(new MesEscolhido(2013, 1), new Vendedor(20, "MANOEL DA SILVA", 1), 999.99),
-        new ServicosComissoesTest(new MesEscolhido(2013, 2), new Vendedor(20, "MANOEL DA SILVA", 1), 1000.00),
-        new ServicosComissoesTest(new MesEscolhido(2013, 3), new Vendedor(20, "MANOEL DA SILVA", 1), 1000.01),
-        new ServicosComissoesTest(new MesEscolhido(2013, 4), new Vendedor(20, "MANOEL DA SILVA", 1), 1799.99),
-        new ServicosComissoesTest(new MesEscolhido(2013, 5), new Vendedor(20, "MANOEL DA SILVA", 1), 1800.00),
-        new ServicosComissoesTest(new MesEscolhido(2013, 6), new Vendedor(20, "MANOEL DA SILVA", 1), 1800.01),
-        new ServicosComissoesTest(new MesEscolhido(2013, 7), new Vendedor(20, "MANOEL DA SILVA", 1), 1999.99),
-        new ServicosComissoesTest(new MesEscolhido(2013, 8), new Vendedor(20, "MANOEL DA SILVA", 1), 2000.01),
-        new ServicosComissoesTest(new MesEscolhido(2013, 9), new Vendedor(20, "MANOEL DA SILVA", 1), 5000.00),
-        
-        new ServicosComissoesTest(new MesEscolhido(2013, 1), new Vendedor(21, "JOANA ANGELICA", 2), 1999.99),
-        new ServicosComissoesTest(new MesEscolhido(2013, 2), new Vendedor(21, "JOANA ANGELICA", 2), 2000.00),
-        new ServicosComissoesTest(new MesEscolhido(2013, 3), new Vendedor(21, "JOANA ANGELICA", 2), 2000.01),
-        new ServicosComissoesTest(new MesEscolhido(2013, 4), new Vendedor(21, "JOANA ANGELICA", 2), 3999.99),
-        new ServicosComissoesTest(new MesEscolhido(2013, 5), new Vendedor(21, "JOANA ANGELICA", 2), 4000.00),
-        new ServicosComissoesTest(new MesEscolhido(2013, 6), new Vendedor(21, "JOANA ANGELICA", 2), 4000.01),
-        new ServicosComissoesTest(new MesEscolhido(2013, 7), new Vendedor(21, "JOANA ANGELICA", 2), 0.00),
-        new ServicosComissoesTest(new MesEscolhido(2013, 8), new Vendedor(21, "JOANA ANGELICA", 2), 0.00),
-        new ServicosComissoesTest(new MesEscolhido(2013, 9), new Vendedor(21, "JOANA ANGELICA", 2), 5000.00)    
-    };
-    
-    @DataPoints
-    public static ServicosComissoesTest[] obterComissaoMensalPorVendedor = {
-        new ServicosComissoesTest(new MesEscolhido(2013, 1), new Vendedor(20, "MANOEL DA SILVA", 1), 99.99),
-        new ServicosComissoesTest(new MesEscolhido(2013, 2), new Vendedor(20, "MANOEL DA SILVA", 1), 100.00),
-        new ServicosComissoesTest(new MesEscolhido(2013, 3), new Vendedor(20, "MANOEL DA SILVA", 1), 150.00),
-        new ServicosComissoesTest(new MesEscolhido(2013, 4), new Vendedor(20, "MANOEL DA SILVA", 1), 269.99),
-        new ServicosComissoesTest(new MesEscolhido(2013, 5), new Vendedor(20, "MANOEL DA SILVA", 1), 270.00),
-        new ServicosComissoesTest(new MesEscolhido(2013, 6), new Vendedor(20, "MANOEL DA SILVA", 1), 360.01),
-        new ServicosComissoesTest(new MesEscolhido(2013, 7), new Vendedor(20, "MANOEL DA SILVA", 1), 399.99),
-        new ServicosComissoesTest(new MesEscolhido(2013, 8), new Vendedor(20, "MANOEL DA SILVA", 1), 260.00),
-        new ServicosComissoesTest(new MesEscolhido(2013, 9), new Vendedor(20, "MANOEL DA SILVA", 1), 860.00),
-        
-        new ServicosComissoesTest(new MesEscolhido(2013, 1), new Vendedor(21, "JOANA ANGELICA", 2), 199.99),
-        new ServicosComissoesTest(new MesEscolhido(2013, 2), new Vendedor(21, "JOANA ANGELICA", 2), 200.00),
-        new ServicosComissoesTest(new MesEscolhido(2013, 3), new Vendedor(21, "JOANA ANGELICA", 2), 400.00),
-        new ServicosComissoesTest(new MesEscolhido(2013, 4), new Vendedor(21, "JOANA ANGELICA", 2), 799.99),
-        new ServicosComissoesTest(new MesEscolhido(2013, 5), new Vendedor(21, "JOANA ANGELICA", 2), 800.00),
-        new ServicosComissoesTest(new MesEscolhido(2013, 6), new Vendedor(21, "JOANA ANGELICA", 2), 1200.00),
-        new ServicosComissoesTest(new MesEscolhido(2013, 7), new Vendedor(21, "JOANA ANGELICA", 2), 0.00),
-        new ServicosComissoesTest(new MesEscolhido(2013, 8), new Vendedor(21, "JOANA ANGELICA", 2), 0.00),
-        new ServicosComissoesTest(new MesEscolhido(2013, 9), new Vendedor(21, "JOANA ANGELICA", 2), 1500.00)    
-    };
-    
-    @Theory
-    public void testObterTotalVendaMensalPorVendedor(ServicosComissoesTest cenario) throws SQLException{
-        Assume.assumeTrue(Arrays.asList(obterTotalVendaMensalPorVendedor).contains(cenario));
-        ServicosComissoes servicosComissoes = new ServicosComissoes();
-      //double totalVendas = instance.obterTotalVendaMensalPorVendedor(cenario.vendedor, cenario.mesEscolhido);
-        assertEquals(cenario.resultado, servicosComissoes.obterTotalVendaMensalPorVendedor(cenario.vendedor, cenario.mesEscolhido), 0.01);
+    @Test
+    public void testTotalVendaMensalPorVendedorJaneiro() throws SQLException {
+        double totalVendaMensalVendedorCategoria1 = instance.obterTotalVendaMensalPorVendedor(new Vendedor(20L, "MANOEL DA SILVA", 1), new MesEscolhido(13, 1));
+        assertEquals(999.99, totalVendaMensalVendedorCategoria1, 0.01);
+
+        double totalVendaMensalVendedorCategoria2 = instance.obterTotalVendaMensalPorVendedor(new Vendedor(21L, "JOANA ANGELICA", 2), new MesEscolhido(13, 1));
+        assertEquals(1999.99, totalVendaMensalVendedorCategoria2, 0.01);
     }
-    
-    @Theory
-    public void testobterComissaoMensalPorVendedor (ServicosComissoesTest cenario) throws SQLException{
-        Assume.assumeTrue(Arrays.asList(obterComissaoMensalPorVendedor).contains(cenario));
-        ServicosComissoes servicosComissoes = new ServicosComissoes();
-      //double comissao = instance.obterComissaoMensalPorVendedor(cenario.vendedor, cenario.mesEscolhido);
-        assertEquals(cenario.resultado, servicosComissoes.obterComissaoMensalPorVendedor(cenario.vendedor, cenario.mesEscolhido), 0.01);
+
+    @Test
+    public void testTotalVendaMensalPorVendedorFevereiro() throws SQLException {
+        double totalVendasMensalVendedorCategoria1 = instance.obterTotalVendaMensalPorVendedor(new Vendedor(20L, "MANOEL DA SILVA", 2), new MesEscolhido(13, 1));
+        assertEquals(1000.00, totalVendasMensalVendedorCategoria1, 0.01);
+
+        double totalVendaMensalVendedorCategoria2 = instance.obterTotalVendaMensalPorVendedor(new Vendedor(21L, "JOANA ANGELICA", 2), new MesEscolhido(13, 2));
+        assertEquals(2000.00, totalVendaMensalVendedorCategoria2, 0.01);
+    }
+
+    @Test
+    public void testTotalVendaMensalPorVendedorMarco() throws SQLException {
+        double totalVendasMensalVendedorCategoria1 = instance.obterTotalVendaMensalPorVendedor(new Vendedor(20L, "MANOEL DA SILVA", 1), new MesEscolhido(13, 3));
+        assertEquals(1000.01, totalVendasMensalVendedorCategoria1, 0.01);
+
+        double totalVendaMensalVendedorCategoria2 = instance.obterTotalVendaMensalPorVendedor(new Vendedor(21L, "JOANA ANGELICA", 2), new MesEscolhido(13, 3));
+        assertEquals(2000.01, totalVendaMensalVendedorCategoria2, 0.01);
+    }
+
+    @Test
+    public void testTotalVendaMensalPorVendedorAbril() throws SQLException {
+        double totalVendasMensalVendedorCategoria1 = instance.obterTotalVendaMensalPorVendedor(new Vendedor(20L, "MANOEL DA SILVA", 1), new MesEscolhido(13, 4));
+        assertEquals(1799.99, totalVendasMensalVendedorCategoria1, 0.01);
+
+        double totalVendaMensalVendedorCategoria2 = instance.obterTotalVendaMensalPorVendedor(new Vendedor(21L, "JOANA ANGELICA", 2), new MesEscolhido(13, 4));
+        assertEquals(3999.99, totalVendaMensalVendedorCategoria2, 0.01);
+    }
+
+    @Test
+    public void testTotalVendaMensalPorVendedorMaio() throws SQLException {
+        double totalVendasMensalVendedorCategoria1 = instance.obterTotalVendaMensalPorVendedor(new Vendedor(20L, "MANOEL DA SILVA", 1), new MesEscolhido(13, 5));
+        assertEquals(1800.00, totalVendasMensalVendedorCategoria1, 0.01);
+
+        double totalVendaMensalVendedorCategoria2 = instance.obterTotalVendaMensalPorVendedor(new Vendedor(21L, "JOANA ANGELICA", 2), new MesEscolhido(13, 5));
+        assertEquals(4000.00, totalVendaMensalVendedorCategoria2, 0.01);
+    }
+
+    @Test
+    public void testTotalVendaMensalPorVendedorJunho() throws SQLException {
+        double totalVendasMensalVendedorCategoria1 = instance.obterTotalVendaMensalPorVendedor(new Vendedor(20L, "MANOEL DA SILVA", 1), new MesEscolhido(13, 6));
+        assertEquals(1800.01, totalVendasMensalVendedorCategoria1, 0.01);
+
+        double totalVendaMensalVendedorCategoria2 = instance.obterTotalVendaMensalPorVendedor(new Vendedor(21L, "JOANA ANGELICA", 2), new MesEscolhido(13, 6));
+        assertEquals(4000.01, totalVendaMensalVendedorCategoria2, 0.01);
+    }
+
+    @Test
+    public void testTotalVendaMensalPorVendedorJulho() throws SQLException {
+        double totalVendasMensalVendedorCategoria1 = instance.obterTotalVendaMensalPorVendedor(new Vendedor(20L, "MANOEL DA SILVA", 1), new MesEscolhido(13, 7));
+        assertEquals(1999.99, totalVendasMensalVendedorCategoria1, 0.01);
+
+        double totalVendaMensalVendedorCategoria2 = instance.obterTotalVendaMensalPorVendedor(new Vendedor(21L, "JOANA ANGELICA", 2), new MesEscolhido(13, 7));
+        assertEquals(0.00, totalVendaMensalVendedorCategoria2, 0.01);
+    }
+
+    @Test
+    public void testTotalVendaMensalPorVendedorAgosto() throws SQLException {
+        double totalVendasMensalVendedorCategoria1 = instance.obterTotalVendaMensalPorVendedor(new Vendedor(20L, "MANOEL DA SILVA", 1), new MesEscolhido(13, 8));
+        assertEquals(2000.00, totalVendasMensalVendedorCategoria1, 0.01);
+
+        double totalVendaMensalVendedorCategoria2 = instance.obterTotalVendaMensalPorVendedor(new Vendedor(21L, "JOANA ANGELICA", 2), new MesEscolhido(13, 8));
+        assertEquals(0.00, totalVendaMensalVendedorCategoria2, 0.01);
+    }
+
+    @Test
+    public void testTotalVendaMensalPorVendedorSetembro() throws SQLException {
+        double totalVendasMensalVendedorCategoria1 = instance.obterTotalVendaMensalPorVendedor(new Vendedor(20L, "MANOEL DA SILVA", 1), new MesEscolhido(13, 9));
+        assertEquals(5000.00, totalVendasMensalVendedorCategoria1, 0.01);
+
+        double totalVendaMensalVendedorCategoria2 = instance.obterTotalVendaMensalPorVendedor(new Vendedor(21L, "JOANA ANGELICA", 2), new MesEscolhido(13, 9));
+        assertEquals(5000.00, totalVendaMensalVendedorCategoria2, 0.01);
+    }
+
+    @Test
+    public void testobterComissaoMensalPorVendedorJaneiro() throws SQLException {
+        double totalVendaMensalVendedorCategoria1 = instance.obterComissaoMensalPorVendedor(new Vendedor(20L, "MANOEL DA SILVA", 1), new MesEscolhido(13, 1));
+        assertEquals(99.99, totalVendaMensalVendedorCategoria1, 0.01);
+
+        double totalVendaMensalVendedorCategoria2 = instance.obterComissaoMensalPorVendedor(new Vendedor(21L, "JOANA ANGELICA", 2), new MesEscolhido(13, 1));
+        assertEquals(199.99, totalVendaMensalVendedorCategoria2, 0.01);
+    }
+
+    @Test
+    public void testobterComissaoMensalPorVendedorFevereiro() throws SQLException {
+        double totalVendaMensalVendedorCategoria1 = instance.obterComissaoMensalPorVendedor(new Vendedor(20L, "MANOEL DA SILVA", 1), new MesEscolhido(13, 2));
+        assertEquals(100.00, totalVendaMensalVendedorCategoria1, 0.01);
+
+        double totalVendaMensalVendedorCategoria2 = instance.obterComissaoMensalPorVendedor(new Vendedor(21L, "JOANA ANGELICA", 2), new MesEscolhido(13, 2));
+        assertEquals(200.00, totalVendaMensalVendedorCategoria2, 0.01);
+    }
+
+    @Test
+    public void testobterComissaoMensalPorVendedorMarco() throws SQLException {
+        double totalVendaMensalVendedorCategoria1 = instance.obterComissaoMensalPorVendedor(new Vendedor(20L, "MANOEL DA SILVA", 1), new MesEscolhido(13, 3));
+        assertEquals(150.00, totalVendaMensalVendedorCategoria1, 0.01);
+
+        double totalVendaMensalVendedorCategoria2 = instance.obterComissaoMensalPorVendedor(new Vendedor(21L, "JOANA ANGELICA", 2), new MesEscolhido(13, 3));
+        assertEquals(400.00, totalVendaMensalVendedorCategoria2, 0.01);
+    }
+
+    @Test
+    public void testobterComissaoMensalPorVendedorAbril() throws SQLException {
+        double totalVendaMensalVendedorCategoria1 = instance.obterComissaoMensalPorVendedor(new Vendedor(20L, "MANOEL DA SILVA", 1), new MesEscolhido(13, 4));
+        assertEquals(269.99, totalVendaMensalVendedorCategoria1, 0.01);
+
+        double totalVendaMensalVendedorCategoria2 = instance.obterComissaoMensalPorVendedor(new Vendedor(21L, "JOANA ANGELICA", 2), new MesEscolhido(13, 4));
+        assertEquals(799.99, totalVendaMensalVendedorCategoria2, 0.01);
+    }
+
+    @Test
+    public void testobterComissaoMensalPorVendedorMaio() throws SQLException {
+        double totalVendaMensalVendedorCategoria1 = instance.obterComissaoMensalPorVendedor(new Vendedor(20L, "MANOEL DA SILVA", 1), new MesEscolhido(13, 5));
+        assertEquals(270.00, totalVendaMensalVendedorCategoria1, 0.01);
+
+        double totalVendaMensalVendedorCategoria2 = instance.obterComissaoMensalPorVendedor(new Vendedor(21L, "JOANA ANGELICA", 2), new MesEscolhido(13, 5));
+        assertEquals(800.00, totalVendaMensalVendedorCategoria2, 0.01);
+    }
+
+    @Test
+    public void testobterComissaoMensalPorVendedorJunho() throws SQLException {
+        double totalVendaMensalVendedorCategoria1 = instance.obterComissaoMensalPorVendedor(new Vendedor(20L, "MANOEL DA SILVA", 1), new MesEscolhido(13, 6));
+        assertEquals(360.00, totalVendaMensalVendedorCategoria1, 0.01);
+
+        double totalVendaMensalVendedorCategoria2 = instance.obterComissaoMensalPorVendedor(new Vendedor(21L, "JOANA ANGELICA", 2), new MesEscolhido(13, 6));
+        assertEquals(1200.00, totalVendaMensalVendedorCategoria2, 0.01);
+    }
+
+    @Test
+    public void testobterComissaoMensalPorVendedorJulho() throws SQLException {
+        double totalVendaMensalVendedorCategoria1 = instance.obterComissaoMensalPorVendedor(new Vendedor(20L, "MANOEL DA SILVA", 1), new MesEscolhido(13, 7));
+        assertEquals(399.99, totalVendaMensalVendedorCategoria1, 0.01);
+
+        double totalVendaMensalVendedorCategoria2 = instance.obterComissaoMensalPorVendedor(new Vendedor(21L, "JOANA ANGELICA", 2), new MesEscolhido(13, 7));
+        assertEquals(0.00, totalVendaMensalVendedorCategoria2, 0.01);
+    }
+
+    @Test
+    public void testobterComissaoMensalPorVendedorAgosto() throws SQLException {
+        double totalVendaMensalVendedorCategoria1 = instance.obterComissaoMensalPorVendedor(new Vendedor(20L, "MANOEL DA SILVA", 1), new MesEscolhido(13, 8));
+        assertEquals(260.00, totalVendaMensalVendedorCategoria1, 0.01);
+
+        double totalVendaMensalVendedorCategoria2 = instance.obterComissaoMensalPorVendedor(new Vendedor(21L, "JOANA ANGELICA", 2), new MesEscolhido(13, 8));
+        assertEquals(0.00, totalVendaMensalVendedorCategoria2, 0.01);
+    }
+
+    @Test
+    public void testobterComissaoMensalPorVendedorSetembro() throws SQLException {
+        double totalVendaMensalVendedorCategoria1 = instance.obterComissaoMensalPorVendedor(new Vendedor(20L, "MANOEL DA SILVA", 1), new MesEscolhido(13, 9));
+        assertEquals(860.00, totalVendaMensalVendedorCategoria1, 0.01);
+
+        double totalVendaMensalVendedorCategoria2 = instance.obterComissaoMensalPorVendedor(new Vendedor(21L, "JOANA ANGELICA", 2), new MesEscolhido(13, 9));
+        assertEquals(1500.00, totalVendaMensalVendedorCategoria2, 0.01);
     }
 }
+
+
+/*
+ @RunWith(Theories.class)
+ public class ServicosComissoesTest {
+ Vendedor vendedor;
+ MesEscolhido mesEscolhido;
+ double resultado;
+
+ public ServicosComissoesTest(Vendedor vendedor, MesEscolhido mesEscolhido, double resultado) {
+ this.vendedor = vendedor;
+ this.mesEscolhido = mesEscolhido;
+ this.resultado = resultado;
+ }
+
+   
+ @DataPoints
+ public static ServicosComissoesTest[] obterTotalVendaMensalPorVendedor = {
+ new ServicosComissoesTest(new Vendedor(20L, "MANOEL DA SILVA", 1), new MesEscolhido(13, 1), 999.99),
+ new ServicosComissoesTest(new Vendedor(20L, "MANOEL DA SILVA", 1), new MesEscolhido(13, 2), 1000.00),
+ new ServicosComissoesTest(new Vendedor(20L, "MANOEL DA SILVA", 1), new MesEscolhido(13, 3), 1000.01),
+ new ServicosComissoesTest(new Vendedor(20L, "MANOEL DA SILVA", 1), new MesEscolhido(13, 4), 1799.99),
+ new ServicosComissoesTest(new Vendedor(20L, "MANOEL DA SILVA", 1), new MesEscolhido(13, 5), 1800.00),
+ new ServicosComissoesTest(new Vendedor(20L, "MANOEL DA SILVA", 1), new MesEscolhido(13, 6), 1800.01),
+ new ServicosComissoesTest(new Vendedor(20L, "MANOEL DA SILVA", 1), new MesEscolhido(13, 7), 1999.99),
+ new ServicosComissoesTest(new Vendedor(20L, "MANOEL DA SILVA", 1), new MesEscolhido(13, 8), 2000.01),
+ new ServicosComissoesTest(new Vendedor(20L, "MANOEL DA SILVA", 1), new MesEscolhido(13, 9), 5000.00),
+ new ServicosComissoesTest(new Vendedor(21L, "JOANA ANGELICA", 2), new MesEscolhido(13, 1), 1999.99),
+ new ServicosComissoesTest(new Vendedor(21L, "JOANA ANGELICA", 2), new MesEscolhido(13, 2), 2000.00),
+ new ServicosComissoesTest(new Vendedor(21L, "JOANA ANGELICA", 2), new MesEscolhido(13, 3), 2000.01),
+ new ServicosComissoesTest(new Vendedor(21L, "JOANA ANGELICA", 2), new MesEscolhido(13, 4), 3999.99),
+ new ServicosComissoesTest(new Vendedor(21L, "JOANA ANGELICA", 2), new MesEscolhido(13, 5), 4000.00),
+ new ServicosComissoesTest(new Vendedor(21L, "JOANA ANGELICA", 2), new MesEscolhido(13, 6), 4000.01),
+ new ServicosComissoesTest(new Vendedor(21L, "JOANA ANGELICA", 2), new MesEscolhido(13, 7), 0.00),
+ new ServicosComissoesTest(new Vendedor(21L, "JOANA ANGELICA", 2), new MesEscolhido(13, 8), 0.00),
+ new ServicosComissoesTest(new Vendedor(21L, "JOANA ANGELICA", 2), new MesEscolhido(13, 9), 5000.00)
+ };
+    
+ @DataPoints
+ public static ServicosComissoesTest[] obterComissaoMensalPorVendedor = {
+ new ServicosComissoesTest(new Vendedor(20L, "MANOEL DA SILVA", 1), new MesEscolhido(13, 1), 99.99),
+ new ServicosComissoesTest(new Vendedor(20L, "MANOEL DA SILVA", 1), new MesEscolhido(13, 2), 100.00),
+ new ServicosComissoesTest(new Vendedor(20L, "MANOEL DA SILVA", 1), new MesEscolhido(13, 3), 150.00),
+ new ServicosComissoesTest(new Vendedor(20L, "MANOEL DA SILVA", 1), new MesEscolhido(13, 4), 269.99),
+ new ServicosComissoesTest(new Vendedor(20L, "MANOEL DA SILVA", 1), new MesEscolhido(13, 5), 270.00),
+ new ServicosComissoesTest(new Vendedor(20L, "MANOEL DA SILVA", 1), new MesEscolhido(13, 6), 360.01),
+ new ServicosComissoesTest(new Vendedor(20L, "MANOEL DA SILVA", 1), new MesEscolhido(13, 7), 399.99),
+ new ServicosComissoesTest(new Vendedor(20L, "MANOEL DA SILVA", 1), new MesEscolhido(13, 8), 260.00),
+ new ServicosComissoesTest(new Vendedor(20L, "MANOEL DA SILVA", 1), new MesEscolhido(13, 9), 860.00),
+ new ServicosComissoesTest(new Vendedor(21L, "JOANA ANGELICA", 2), new MesEscolhido(13, 1), 199.99),
+ new ServicosComissoesTest(new Vendedor(21L, "JOANA ANGELICA", 2), new MesEscolhido(13, 2), 200.00),
+ new ServicosComissoesTest(new Vendedor(21L, "JOANA ANGELICA", 2), new MesEscolhido(13, 3), 400.00),
+ new ServicosComissoesTest(new Vendedor(21L, "JOANA ANGELICA", 2), new MesEscolhido(13, 4), 799.99),
+ new ServicosComissoesTest(new Vendedor(21L, "JOANA ANGELICA", 2), new MesEscolhido(13, 5), 800.00),
+ new ServicosComissoesTest(new Vendedor(21L, "JOANA ANGELICA", 2), new MesEscolhido(13, 6), 1200.00),
+ new ServicosComissoesTest(new Vendedor(21L, "JOANA ANGELICA", 2), new MesEscolhido(13, 7), 0.00),
+ new ServicosComissoesTest(new Vendedor(21L, "JOANA ANGELICA", 2), new MesEscolhido(13, 8), 0.00),
+ new ServicosComissoesTest(new Vendedor(21L, "JOANA ANGELICA", 2), new MesEscolhido(13, 9), 1500.00)
+ };
+
+ @Theory
+ public void testObterTotalVendaMensalPorVendedor(ServicosComissoesTest cenario) throws SQLException {
+ Assume.assumeTrue(Arrays.asList(obterTotalVendaMensalPorVendedor).contains(cenario));
+ ServicosComissoes instance = new ServicosComissoes();
+ double totalVendas = instance.obterTotalVendaMensalPorVendedor(cenario.vendedor, cenario.mesEscolhido);
+ assertEquals(totalVendas, cenario.resultado, 0.01);
+ }
+
+ @Theory
+ public void testobterComissaoMensalPorVendedor(ServicosComissoesTest cenario) throws SQLException {
+ Assume.assumeTrue(Arrays.asList(obterComissaoMensalPorVendedor).contains(cenario));
+ ServicosComissoes instance = new ServicosComissoes();
+ double comissao = instance.obterComissaoMensalPorVendedor(cenario.vendedor, cenario.mesEscolhido);
+ assertEquals(comissao, cenario.resultado, 0.01);
+ }
+ }
+ */
