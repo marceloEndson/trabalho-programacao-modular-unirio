@@ -43,7 +43,7 @@ public class ServicosVendas {
     
     public String importarPrecosDoArquivo(String nomeArquivo){
         listaVendas = vendasDAO.getObjetos(nomeArquivo);
-        boolean sucesso = false;
+        boolean sucesso = true;
         StringBuilder idIgnorado=new StringBuilder();
         for (Venda venda : listaVendas){
             try {
@@ -54,7 +54,7 @@ public class ServicosVendas {
             } catch (SQLException e) {
             	sucesso = false;
             	e.printStackTrace();
-                return ("Ocorreu o seguinte erro ao carregar o registro " + venda.getProduto() + ": " + e.getMessage());
+                return ("Ocorreu o seguinte erro ao carregar a venda " + venda.getProduto() + ": " + e.getMessage());
             }
         }
         if (!sucesso || listaVendas.size()==0)
