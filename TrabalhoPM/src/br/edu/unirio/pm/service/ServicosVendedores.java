@@ -51,7 +51,7 @@ public class ServicosVendedores {
             } catch (SQLException e){
             	sucesso = false;
             	e.printStackTrace();
-                return "Ocorreu o seguinte erro ao carregar o registro " + vendedor.getCodigo() + ": " + e.getMessage();
+                return ("Ocorreu o seguinte erro ao carregar o registro " + vendedor.getCodigo() + ": " + e.getMessage());
             }
         }
         if (!sucesso)
@@ -59,7 +59,7 @@ public class ServicosVendedores {
 
         else {
         	if (idAtualizado.length()>0){
-        		return "Dados carregados com sucesso. Foram atualizados os seguintes IDS que já existiam: " + idAtualizado.toString().substring(0, idAtualizado.length()-2);
+        		return "Dados carregados com sucesso.\n Foram atualizados o Nome e a Categoria do seguintes IDS que já existiam: \n" + idAtualizado.toString().substring(0, idAtualizado.length()-2);
         	} else {
         		return "Dados foram carregados com Sucesso!";
         	}
