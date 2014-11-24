@@ -82,7 +82,7 @@ public class ProdutosDAO extends AbstractArquivosDAO<Produto> {
 		comando = null;
 		try {
 			if (!produtoEstaNoBanco(produto.getCodigo())) {
-                                System.out.println("Produto nao esta no banco");
+                 System.out.println("Produto nao esta no banco");
 				return false;
 			} else {
 				FabricaConexao.iniciarConexao();

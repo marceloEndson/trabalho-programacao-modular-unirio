@@ -61,6 +61,7 @@ public class VendedoresDAO extends AbstractArquivosDAO<Vendedor> {
                 return true;
             }
         } finally {
+            System.out.println(INSERT);
             FabricaConexao.fecharComando(comando);
             FabricaConexao.fecharConexao();
         }
