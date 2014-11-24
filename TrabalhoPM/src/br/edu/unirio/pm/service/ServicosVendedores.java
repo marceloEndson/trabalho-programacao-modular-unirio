@@ -54,10 +54,9 @@ public class ServicosVendedores {
                 return ("Ocorreu o seguinte erro ao carregar o registro " + vendedor.getCodigo() + ": " + e.getMessage());
             }
         }
-        if (!sucesso)
+        if (!sucesso || listaVendedores.size()==0) {
             return "Falha ao importar os dados.";
-
-        else {
+        } else {
         	if (idAtualizado.length()>0){
         		return "Dados carregados com sucesso.\n Foram atualizados o Nome e a Categoria do seguintes IDS que já existiam: \n" + idAtualizado.toString().substring(0, idAtualizado.length()-2);
         	} else {

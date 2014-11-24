@@ -9,17 +9,19 @@ package br.edu.unirio.pm.service;
 import br.edu.unirio.pm.dao.AbstractArquivosDAO;
 import br.edu.unirio.pm.dao.VendasDAO;
 import br.edu.unirio.pm.model.Venda;
+
 import java.sql.SQLException;
 import java.util.ArrayList;
-
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import org.joda.time.LocalDate;
 
 /**
  *
  * @author Luiz Carlos
+ * @alter Rogerio Silva
  */
 public class ServicosVendas {
     
@@ -42,17 +44,29 @@ public class ServicosVendas {
     public String importarPrecosDoArquivo(String nomeArquivo){
         listaVendas = vendasDAO.getObjetos(nomeArquivo);
         boolean sucesso = false;
+        StringBuilder idIgnorado=new StringBuilder();
         for (Venda venda : listaVendas){
             try {
-                sucesso = vendasDAO.inserirVenda(venda);
+                System.out.println(venda.getDataVenda());
+                if (!vendasDAO.inserirVenda(venda)){
+                	idIgnorado.append(venda.getDataVenda()).append(", ");
+                }
             } catch (SQLException e) {
-                return "Ocorreu o seguinte erro ao carregar o registro: " + e.getMessage();
+            	sucesso = false;
+            	e.printStackTrace();
+                return ("Ocorreu o seguinte erro ao carregar o registro " + venda.getProduto() + ": " + e.getMessage());
             }
         }
-        if (!sucesso)
+        if (!sucesso || listaVendas.size()==0)
             return "Falha ao importar os dados.";
-        else
-            return "Dados foram carregados com Sucesso!";
+
+        else {
+        	if (idIgnorado.length()>0){
+        		return "Dados carregados com sucesso. Foram Ignorados os seguintes Vendedores que já existiam: " + idIgnorado.toString().substring(0, idIgnorado.length()-2);
+        	} else {
+        		return "Dados foram carregados com Sucesso!";
+        	}
+        }
     }
     
     public List<Integer> obterAnosDisponiveisParaConsulta() throws SQLException{
