@@ -177,14 +177,14 @@ public class TelaPrincipal extends javax.swing.JFrame {
             exibirMensagemDialogo("Arquivo inválido.");
     }//GEN-LAST:event_importarPrecosProdutosActionPerformed
 
-    private void importarVendedoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_importarVendedoresActionPerformed
+    private void importarVendedoresActionPerformed(java.awt.event.ActionEvent evt) {
         arquivoSelecionado = exibirSeletorArquivo("Importar Vendedores");
         if (arquivoSelecionado!=null){
             String mensagem = servicosVendedores.importarVendedoresDoArquivo(arquivoSelecionado.getAbsolutePath());
             exibirMensagemDialogo(mensagem);
         }else
             exibirMensagemDialogo("Arquivo inválido.");        
-    }//GEN-LAST:event_importarVendedoresActionPerformed
+    }
 
     private void importarVendasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_importarVendasActionPerformed
         arquivoSelecionado = exibirSeletorArquivo("Importar Vendas");
