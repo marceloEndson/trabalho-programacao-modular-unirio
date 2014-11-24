@@ -152,7 +152,6 @@ public class TelaTotaisVendasComissoesPorMes extends javax.swing.JInternalFrame 
     private void botaoOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoOkActionPerformed
 
         MesEscolhido mesEscolhido = verificarMesEscolhido();
-        System.out.println(mesEscolhido.getMes());
         iniciarTabela();
         try {
             List<Vendedor> listaVendedores = servicosVendedores.obterListaVendedores();

@@ -89,19 +89,17 @@ public class ServicosComissoes {
     
     public double obterComissaoAcumuladaPorVendedor(MesEscolhido mesInicial, MesEscolhido mesFinal, Vendedor vendedor) throws SQLException{
         double comissaoAcumulada = 0;
-        MesEscolhido mes = new MesEscolhido (mesInicial.getAno(), mesInicial.getMes());
+        MesEscolhido mes = mesInicial;
         comissaoAcumulada = obterComissaoMensalPorVendedor(vendedor, mesInicial);
         while (!mes.equals(mesFinal)){
             mes.acrescentarUmMes();
-            System.out.println("comissao acum parcial " + comissaoAcumulada);
-            comissaoAcumulada = obterComissaoMensalPorVendedor(vendedor, mes);
+            comissaoAcumulada += obterComissaoMensalPorVendedor(vendedor, mes);
         }
-        System.out.println("comissao acum parcial " + comissaoAcumulada);
         return comissaoAcumulada;
     }
     
     public double obterVendaAcumuladaPorVendedor(MesEscolhido mesInicial, MesEscolhido mesFinal, Vendedor vendedor) throws SQLException{
-        MesEscolhido mes = mesInicial;
+        MesEscolhido mes = new MesEscolhido (mesInicial.getAno(), mesInicial.getMes());
         double vendaAcumuladaPorVendedor = 0;
         vendaAcumuladaPorVendedor += obterTotalVendaMensalPorVendedor(vendedor, mesInicial);
         while(!mes.equals(mesFinal)){
@@ -109,6 +107,31 @@ public class ServicosComissoes {
             vendaAcumuladaPorVendedor += obterTotalVendaMensalPorVendedor(vendedor, mes);   
         }
         return vendaAcumuladaPorVendedor;
+    }
+    
+    public double obterComissaoAcumuladaMediaPorVendedor(MesEscolhido mesInicial, MesEscolhido mesFinal, Vendedor vendedor) throws SQLException{
+        double comissaoAcumuladaPorVendedor = obterComissaoAcumuladaPorVendedor(mesInicial, mesFinal, vendedor);
+        int quantidadeMeses = 1;
+        MesEscolhido mes = new MesEscolhido (mesInicial.getAno(), mesInicial.getMes());
+        while (!mes.equals(mesFinal)){
+            quantidadeMeses++;
+            mes.acrescentarUmMes();
+        }
+        double media = comissaoAcumuladaPorVendedor / quantidadeMeses;
+        return media;     
+    }
+    
+    public double obterVendaAcumuladaMediaPorVendedor(MesEscolhido mesInicial, MesEscolhido mesFinal, Vendedor vendedor) throws SQLException{
+        double vendaAcumuladaPorVendedor = obterVendaAcumuladaPorVendedor(mesInicial, mesFinal, vendedor);
+        int quantidadeMeses = 1;
+        MesEscolhido mes = new MesEscolhido (mesInicial.getAno(), mesInicial.getMes());
+        System.out.println("mes inicial " + mesInicial.getAno() + " " + mesInicial.getMes());
+        System.out.println("mes final " + mesFinal.getAno() + " " + mesFinal.getMes());
+        while (!mes.equals(mesFinal)){
+            quantidadeMeses++;
+            mes.acrescentarUmMes();
+        } 
+        return (double) (vendaAcumuladaPorVendedor / quantidadeMeses); 
     }
     
 }
