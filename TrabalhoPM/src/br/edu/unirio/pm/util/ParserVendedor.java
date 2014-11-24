@@ -28,7 +28,7 @@ public class ParserVendedor implements Parser<Vendedor> {
             validaVendedor(codigo, categoria);
             return new Vendedor(codigo, nome, categoria);
         } catch (Exception e) {
-            System.out.println("Erro ao processar linha de Vendedor! " + e.getMessage());
+            System.out.println("Erro ao ler a linha de Vendedor! " + linha + ": " + e.getMessage());
         }
         return null;
     }
