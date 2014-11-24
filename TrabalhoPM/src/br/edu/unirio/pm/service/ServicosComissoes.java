@@ -38,16 +38,15 @@ public class ServicosComissoes {
         
     }
     
-    public double obterTotalVendaMensalPorVendedor(Vendedor vendedor, MesEscolhido mesEscolhido) throws SQLException{
-        List<Venda> listaVendas = vendasDAO.obterVendasDoMes(mesEscolhido);
-        double totalVendaMensal = 0;
-        for (Venda venda : listaVendas){
-            if (vendaPertenceAoVendedor(venda, vendedor))
-                totalVendaMensal += (venda.getQuantidadeVendida() * venda.getProduto().getPreco());
-        }
-        return totalVendaMensal;
-        
-    }
+	public double obterTotalVendaMensalPorVendedor(Vendedor vendedor, MesEscolhido mesEscolhido) throws SQLException {
+		List<Venda> listaVendas = vendasDAO.obterVendasDoMes(mesEscolhido, vendedor);
+		double totalVendaMensal = 0;
+		for (Venda venda : listaVendas) {
+			// if (vendaPertenceAoVendedor(venda, vendedor))
+			totalVendaMensal += (venda.getQuantidadeVendida() * venda.getProduto().getPreco());
+		}
+		return totalVendaMensal;
+	}
     
     private boolean vendaPertenceAoVendedor(Venda venda, Vendedor vendedor){
         if (venda.getVendedor().getCodigo() == vendedor.getCodigo())
