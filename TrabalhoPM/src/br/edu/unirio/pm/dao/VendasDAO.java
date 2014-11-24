@@ -24,6 +24,7 @@ import br.edu.unirio.pm.util.ParserVenda;
 /**
  * 
  * @author MCE
+ * @alter Rogerio Silva
  */
 public class VendasDAO extends AbstractArquivosDAO<Venda> {
 
